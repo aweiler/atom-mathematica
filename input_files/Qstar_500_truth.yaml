@@ -1,0 +1,247 @@
+# Atom ver. 0.9 yaml output
+# Contains Cuts and Efficiencies
+Sub Processes Information:
+  - Process ID: 147
+    Process ID Final State: [4000001]
+  - Process ID: 148
+    Process ID Final State: [4000002]
+Cross Sections:
+  - Process ID: 0
+    Cross Section: 6425
+    Cross Section Error: [-29, 29]
+  - Process ID: 147
+    Cross Section: 2242
+    Cross Section Error: [-17, 17]
+  - Process ID: 148
+    Cross Section: 4183
+    Cross Section Error: [-23, 23]
+Analyses:
+  ATLAS_1008_2461:
+    Summary: Search for New Particles in Two-Jet Final States in 7 TeV Proton-Proton Collisions with the ATLAS Detector at the LHC
+    Experiment: ATLAS
+    Collider: LHC7
+    Year: 2010
+    Description: A search for new heavy particles manifested as resonances in two-jet final states is presented. The data were produced in 7 TeV proton-proton collisions by the Large Hadron Collider (LHC) and correspond to an integrated luminosity of 315 nb^-1 collected by the ATLAS detector. No resonances were observed. Upper limits were set on the product of cross section and signal acceptance for excited-quark (q*) production as a function of q* mass. These exclude at the 95% CL the q* mass interval 0.30 < mq* < 1.26 TeV, extending the reach of previous experiments.
+    RunInfo: Search for New Particles in Two-Jet Final States in 7 TeV Proton-Proton Collisions with the ATLAS Detector at the LHC
+    Status: VALIDATED
+    Authors:
+      - Christopher Vermilion <verm@uw.edu>
+      - Michele Papucci <papucci@lbl.gov>
+    References:
+      - arXiv:1008.2461
+    SpiresID: 8755477
+    InspireID: 865423
+    BibKey: :2010bc
+    Luminosity:
+      Value: 0.31
+      Error: 0.035
+    Efficiencies:
+      - Efficiency Name: Efficiency
+        Description: ""
+        IsControlRegion: false
+        Data:
+          - Sub-process ID: 0
+            Efficiency Value: 0.133
+            Efficiency Stat Error: [-0.0015, 0.0015]
+            Flags: [None]
+          - Sub-process ID: 147
+            Efficiency Value: 0.0505
+            Efficiency Stat Error: [-0.00097, 0.00099]
+            Flags: [None]
+          - Sub-process ID: 148
+            Efficiency Value: 0.0826
+            Efficiency Stat Error: [-0.0012, 0.0012]
+            Flags: [None]
+      - Efficiency Name: Efficiency2
+        Description: ""
+        IsControlRegion: false
+        Data:
+          - Sub-process ID: 0
+            Efficiency Value: 0.133
+            Efficiency Stat Error: [-0.0015, 0.0015]
+            Flags: [None]
+          - Sub-process ID: 147
+            Efficiency Value: 0.0505
+            Efficiency Stat Error: [-0.00097, 0.00099]
+            Flags: [None]
+          - Sub-process ID: 148
+            Efficiency Value: 0.0826
+            Efficiency Stat Error: [-0.0012, 0.0012]
+            Flags: [None]            
+
+    Cuts:
+      - Cut Name: J1J2_etaSep
+        Description: ""
+        Parent Cut: [J2_etaRange, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.155
+            Cut Stat Error: [-0.0016, 0.0016]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.73
+            Cut Log. Der. Stat Error: [-0.081, 0.081]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.059
+            Cut Stat Error: [-0.001, 0.0011]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.69
+            Cut Log. Der. Stat Error: [-0.13, 0.13]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.0957
+            Cut Stat Error: [-0.0013, 0.0013]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.75
+            Cut Log. Der. Stat Error: [-0.1, 0.1]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: J2_etaRange
+        Description: ""
+        Parent Cut: [LeadJ_etaRange, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.2446
+            Cut Stat Error: [-0.0019, 0.0019]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.075
+            Cut Log. Der. Stat Error: [-0.064, 0.064]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.089
+            Cut Stat Error: [-0.0013, 0.0013]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.12
+            Cut Log. Der. Stat Error: [-0.11, 0.11]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.156
+            Cut Stat Error: [-0.0016, 0.0016]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.047
+            Cut Log. Der. Stat Error: [-0.08, 0.081]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: J2_pT
+        Description: ""
+        Parent Cut: [LeadJ_pT, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.356
+            Cut Stat Error: [-0.0021, 0.0021]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.126
+            Cut Stat Error: [-0.0015, 0.0015]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.2303
+            Cut Stat Error: [-0.0019, 0.0019]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: LeadJ_etaRange
+        Description: ""
+        Parent Cut: [J2_pT, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.2948
+            Cut Stat Error: [-0.002, 0.002]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.041
+            Cut Log. Der. Stat Error: [-0.058, 0.058]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.106
+            Cut Stat Error: [-0.0014, 0.0014]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.05
+            Cut Log. Der. Stat Error: [-0.097, 0.097]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.189
+            Cut Stat Error: [-0.0017, 0.0018]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: -0.035
+            Cut Log. Der. Stat Error: [-0.073, 0.073]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: LeadJ_pT
+        Description: ""
+        Parent Cut: [NumJets, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.356
+            Cut Stat Error: [-0.0021, 0.0021]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.541
+            Cut Log. Der. Stat Error: [-0.053, 0.053]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.126
+            Cut Stat Error: [-0.0015, 0.0015]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.54
+            Cut Log. Der. Stat Error: [-0.089, 0.089]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.2303
+            Cut Stat Error: [-0.0019, 0.0019]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.54
+            Cut Log. Der. Stat Error: [-0.066, 0.066]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: NumJets
+        Description: ""
+        Parent Cut: ["", Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.99804
+            Cut Stat Error: [-0.0002, 0.0002]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.3483
+            Cut Stat Error: [-0.0021, 0.0021]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.6497
+            Cut Stat Error: [-0.0021, 0.0021]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0
+            Cut Log. Der. Stat Error: [-0, 0]
+            Cut Log. Der. Flags: [None]
+      - Cut Name: mjj
+        Description: ""
+        Parent Cut: [J1J2_etaSep, Passed]
+        Data:
+          - Sub-process ID: 0
+            Cut Value: 0.133
+            Cut Stat Error: [-0.0015, 0.0015]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.18
+            Cut Log. Der. Stat Error: [-0.087, 0.087]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 147
+            Cut Value: 0.0505
+            Cut Stat Error: [-0.00097, 0.00099]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.17
+            Cut Log. Der. Stat Error: [-0.14, 0.14]
+            Cut Log. Der. Flags: [None]
+          - Sub-process ID: 148
+            Cut Value: 0.0826
+            Cut Stat Error: [-0.0012, 0.0012]
+            Cut Value Flags: [None]
+            Cut Log. Derivative: 0.19
+            Cut Log. Der. Stat Error: [-0.11, 0.11]
+            Cut Log. Der. Flags: [None]

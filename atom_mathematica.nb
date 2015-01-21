@@ -1,0 +1,2435 @@
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[         0,          0]
+NotebookDataLength[     96409,       2434]
+NotebookOptionsPosition[     92385,       2293]
+NotebookOutlinePosition[     92738,       2309]
+CellTagsIndexPosition[     92695,       2306]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[{
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " Analysis of Atom-output"
+}], "Title",
+ CellChangeTimes->{{3.630212046974228*^9, 3.630212058548978*^9}}],
+
+Cell["author: Andreas Weiler (andreas.weiler@cern.ch)", "Text",
+ CellChangeTimes->{{3.630215509772991*^9, 3.6302155192844543`*^9}}],
+
+Cell[TextData[{
+ "1) should be able to parse all the available information in the JSON \
+(produced from Yaml via the yaml2json tool)\n2) should be able to read yoda \
+histogram files (done for HISTO1D)\n3) should be user-friendly (done)\n\n\n",
+ StyleBox["TODO\n\n",
+  FontWeight->"Bold"],
+ "- check if value exists before printing, otherwise print nothing\n- import \
+the rest of the (legacy) matehamtica atom package\n- underflow/overflow \
+example needed\n- get more yoda histogramming examples\n"
+}], "Text",
+ CellChangeTimes->{{3.630212081853321*^9, 3.6302120833023243`*^9}, {
+   3.630212444019497*^9, 3.630212444168282*^9}, {3.6302148479714813`*^9, 
+   3.6302148669072*^9}, {3.63021653409826*^9, 3.630216552545038*^9}, 
+   3.630216627847698*^9, {3.630395082878243*^9, 3.630395091409936*^9}, {
+   3.6304028118066053`*^9, 3.630402835167718*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Routines for JSON Atom output parsing", "Subchapter",
+ CellChangeTimes->{{3.630212647460113*^9, 3.630212658850993*^9}, {
+  3.6302387939198627`*^9, 3.6302388059577427`*^9}, {3.630404665667698*^9, 
+  3.630404666920763*^9}}],
+
+Cell[BoxData[
+ RowBox[{"<<", 
+  "\"\</Users/aweiler/MC/Atom_Mathematica/atom_mathematica.m\>\""}]], "Input",\
+
+ CellChangeTimes->{{3.63081355206201*^9, 3.630813556432315*^9}, {
+  3.630813589407419*^9, 3.6308135927304573`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Implementation", "Subsection",
+ CellChangeTimes->{{3.630238818318512*^9, 3.630238820606592*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+   "******)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", "   ", 
+   RowBox[{"CROSS", " ", 
+    RowBox[{
+     RowBox[{"SECTION", "/", "LUMI"}], "/", "RUN"}], " ", "INFO"}], "   ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+   "******)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"wdir", " ", "=", " ", 
+     RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"res", "=", 
+     RowBox[{"Import", "[", 
+      RowBox[{"wdir", "<>", "\"\<input_files/Qstar_500_truth.json\>\""}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"ListCuts", "[", 
+    RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"ShowListCuts", "[", 
+    RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"GetCut", "[", 
+    RowBox[{
+    "res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}], 
+    "]"}], "\[IndentingNewLine]", 
+   RowBox[{"GetCutValue", "[", 
+    RowBox[{
+    "res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}], 
+    "]"}], "\[IndentingNewLine]", 
+   RowBox[{"GetCutError", "[", 
+    RowBox[{
+    "res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}], 
+    "]"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowCrossSection", "[", "json_", "]"}], " ", ":=", " ", 
+     RowBox[{"OV", "[", 
+      RowBox[{"json", ",", "\"\<Cross section\>\""}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowAtomRunInfo", "[", "json_", "]"}], ":=", " ", 
+     RowBox[{"OV", "[", 
+      RowBox[{"json", ",", "\"\<Atom Run Info\>\""}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6302126645736523`*^9, 3.6302126682926807`*^9}, {
+   3.630213571068281*^9, 3.630213615246125*^9}, {3.6302136500588913`*^9, 
+   3.6302137667339478`*^9}, {3.6302137986899652`*^9, 3.630213842691394*^9}, {
+   3.630213874693633*^9, 3.6302141320742683`*^9}, 3.6302142030066032`*^9, {
+   3.6302142634485607`*^9, 3.630214381231167*^9}, {3.630214486342355*^9, 
+   3.630214516964677*^9}, {3.6302145489454*^9, 3.6302146407101192`*^9}, {
+   3.630214674742538*^9, 3.6302147220566998`*^9}, {3.630214763022561*^9, 
+   3.630214843158244*^9}, {3.630214885695362*^9, 3.6302149398280487`*^9}, {
+   3.630214996687746*^9, 3.630215107933896*^9}, {3.630215326792695*^9, 
+   3.63021550336619*^9}, {3.630215772950139*^9, 3.6302158619690237`*^9}, 
+   3.630215893414589*^9, {3.630813414745867*^9, 3.630813420971545*^9}, 
+   3.6308134729314833`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"J1J2_etaSep\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.155`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.73`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.081`"}], ",", "0.081`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.2446`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.075`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.064`"}], ",", "0.064`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"J2_pT\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"LeadJ_pT\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.356`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J2_pT\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.2948`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.041`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.058`"}], ",", "0.058`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_pT\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"NumJets\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.356`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0.541`", ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.053`"}], ",", "0.053`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"NumJets\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.99804`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"mjj\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J1J2_etaSep\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.133`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0.18`", ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.087`"}], ",", "0.087`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.630581751438019*^9, 3.630581833644507*^9}, {
+   3.630652563549035*^9, 3.630652588025388*^9}, {3.630652650996434*^9, 
+   3.630652661560227*^9}, {3.6306542190464573`*^9, 3.630654272268695*^9}, 
+   3.6306543343659077`*^9, {3.630654374198701*^9, 3.63065447354922*^9}, 
+   3.6306545246908407`*^9, 3.630813596919189*^9}],
+
+Cell[BoxData[
+ StyleBox["\<\" Cutflow for ATLAS_1008_2461\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[0, 0, 1],
+  FrontFaceColor->RGBColor[0, 0, 1],
+  BackFaceColor->RGBColor[0, 0, 1],
+  GraphicsColor->RGBColor[0, 0, 1],
+  FontWeight->Bold,
+  FontColor->RGBColor[0, 0, 1]]], "Print",
+ CellChangeTimes->{
+  3.6306526615769653`*^9, {3.6306542190691147`*^9, 3.630654272275063*^9}, 
+   3.6306543343802137`*^9, {3.630654374208537*^9, 3.630654473559196*^9}, 
+   3.630654524700872*^9, 3.630813596927475*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"\"\>", ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0.2446`", ",", 
+      RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+      RowBox[{"-", "0.075`"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.064`"}], ",", "0.064`"}], "}"}], ",", 
+      RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.630581751438019*^9, 3.630581833644507*^9}, {
+   3.630652563549035*^9, 3.630652588025388*^9}, {3.630652650996434*^9, 
+   3.630652661560227*^9}, {3.6306542190464573`*^9, 3.630654272268695*^9}, 
+   3.6306543343659077`*^9, {3.630654374198701*^9, 3.63065447354922*^9}, 
+   3.6306545246908407`*^9, 3.630813596933321*^9}],
+
+Cell[BoxData["0.2446`"], "Output",
+ CellChangeTimes->{{3.630581751438019*^9, 3.630581833644507*^9}, {
+   3.630652563549035*^9, 3.630652588025388*^9}, {3.630652650996434*^9, 
+   3.630652661560227*^9}, {3.6306542190464573`*^9, 3.630654272268695*^9}, 
+   3.6306543343659077`*^9, {3.630654374198701*^9, 3.63065447354922*^9}, 
+   3.6306545246908407`*^9, 3.630813596938785*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Examples", "Subsection",
+ CellChangeTimes->{{3.6302388314566936`*^9, 3.630238832391168*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Show Analysis Info", "Subsubsection",
+ CellChangeTimes->{{3.6306545590239897`*^9, 3.6306545727751703`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"wdir", " ", "=", " ", 
+   RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"res", "=", 
+   RowBox[{"Import", "[", 
+    RowBox[{"wdir", "<>", "\"\<input_files/Qstar_500_truth.json\>\""}], 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6302125269579563`*^9, 3.630212543679124*^9}, 
+   3.630581758429102*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ShowAnalysisInfo", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.630213777736021*^9, {3.6302140657988043`*^9, 3.630214067518325*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ StyleBox["\<\"ATLAS_1008_2461\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[0, 0, 1],
+  FrontFaceColor->RGBColor[0, 0, 1],
+  BackFaceColor->RGBColor[0, 0, 1],
+  GraphicsColor->RGBColor[0, 0, 1],
+  FontWeight->Bold,
+  FontColor->RGBColor[0, 0, 1]]], "Print",
+ CellChangeTimes->{
+  3.6302137786066637`*^9, 3.630213847088345*^9, 3.630214067873077*^9, 
+   3.630214110466757*^9, 3.630214350195712*^9, 3.630214386492697*^9, {
+   3.630214499808126*^9, 3.630214520233203*^9}, 3.630214589037012*^9, {
+   3.6302146248770857`*^9, 3.630214644936439*^9}, {3.6308136115439377`*^9, 
+   3.6308136356844063`*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Summary : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"Search for New Particles in Two-Jet Final States \
+in 7 TeV Proton-Proton Collisions with the ATLAS Detector at the LHC\"\>"}],
+  SequenceForm[
+   Style["Summary : ", 
+    RGBColor[0, 0, 1]], 
+   "Search for New Particles in Two-Jet Final States in 7 TeV Proton-Proton \
+Collisions with the ATLAS Detector at the LHC"],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.6302137786066637`*^9, 3.630213847088345*^9, 3.630214067873077*^9, 
+   3.630214110466757*^9, 3.630214350195712*^9, 3.630214386492697*^9, {
+   3.630214499808126*^9, 3.630214520233203*^9}, 3.630214589037012*^9, {
+   3.6302146248770857`*^9, 3.630214644936439*^9}, {3.6308136115439377`*^9, 
+   3.630813635691926*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Int. luminosity : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"0.00031 1/fb \"\>"}],
+  SequenceForm[
+   Style["Int. luminosity : ", 
+    RGBColor[0, 0, 1]], "0.00031 1/fb "],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.6302137786066637`*^9, 3.630213847088345*^9, 3.630214067873077*^9, 
+   3.630214110466757*^9, 3.630214350195712*^9, 3.630214386492697*^9, {
+   3.630214499808126*^9, 3.630214520233203*^9}, 3.630214589037012*^9, {
+   3.6302146248770857`*^9, 3.630214644936439*^9}, {3.6308136115439377`*^9, 
+   3.63081363569932*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"References : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"{arXiv:1008.2461}\"\>"}],
+  SequenceForm[
+   Style["References : ", 
+    RGBColor[0, 0, 1]], "{arXiv:1008.2461}"],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.6302137786066637`*^9, 3.630213847088345*^9, 3.630214067873077*^9, 
+   3.630214110466757*^9, 3.630214350195712*^9, 3.630214386492697*^9, {
+   3.630214499808126*^9, 3.630214520233203*^9}, 3.630214589037012*^9, {
+   3.6302146248770857`*^9, 3.630214644936439*^9}, {3.6308136115439377`*^9, 
+   3.6308136357064037`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ShowFullAnalysisInfo", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]], "Input",
+ CellChangeTimes->{{3.630212676206182*^9, 3.630212677667625*^9}, {
+  3.630213472128853*^9, 3.630213489519861*^9}, {3.630214704768742*^9, 
+  3.630214706726049*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ StyleBox["\<\"ATLAS_1008_2461\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[0, 0, 1],
+  FrontFaceColor->RGBColor[0, 0, 1],
+  BackFaceColor->RGBColor[0, 0, 1],
+  GraphicsColor->RGBColor[0, 0, 1],
+  FontWeight->Bold,
+  FontColor->RGBColor[0, 0, 1]]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633718273*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Summary : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"Search for New Particles in Two-Jet Final States \
+in 7 TeV Proton-Proton Collisions with the ATLAS Detector at the LHC\"\>"}],
+  SequenceForm[
+   Style["Summary : ", 
+    RGBColor[0, 0, 1]], 
+   "Search for New Particles in Two-Jet Final States in 7 TeV Proton-Proton \
+Collisions with the ATLAS Detector at the LHC"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633727332*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Experiment : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\"ATLAS\"\>"}],
+  SequenceForm[
+   Style["Experiment : ", 
+    RGBColor[0, 0, 1]], "ATLAS"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633734562*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Year : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\"2010\"\>"}],
+  SequenceForm[
+   Style["Year : ", 
+    RGBColor[0, 0, 1]], "2010"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633742778*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Description : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"A search for new heavy particles manifested as \
+resonances in two-jet final states is presented. The data were produced in 7 \
+TeV proton-proton collisions by the Large Hadron Collider (LHC) and \
+correspond to an integrated luminosity of 315 nb^-1 collected by the ATLAS \
+detector. No resonances were observed. Upper limits were set on the product \
+of cross section and signal acceptance for excited-quark (q*) production as a \
+function of q* mass. These exclude at the 95% CL the q* mass interval 0.30 < \
+mq* < 1.26 TeV, extending the reach of previous experiments.\"\>"}],
+  SequenceForm[
+   Style["Description : ", 
+    RGBColor[0, 0, 1]], 
+   "A search for new heavy particles manifested as resonances in two-jet \
+final states is presented. The data were produced in 7 TeV proton-proton \
+collisions by the Large Hadron Collider (LHC) and correspond to an integrated \
+luminosity of 315 nb^-1 collected by the ATLAS detector. No resonances were \
+observed. Upper limits were set on the product of cross section and signal \
+acceptance for excited-quark (q*) production as a function of q* mass. These \
+exclude at the 95% CL the q* mass interval 0.30 < mq* < 1.26 TeV, extending \
+the reach of previous experiments."],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633750268*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"RunInfo : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"Search for New Particles in Two-Jet Final States \
+in 7 TeV Proton-Proton Collisions with the ATLAS Detector at the LHC\"\>"}],
+  SequenceForm[
+   Style["RunInfo : ", 
+    RGBColor[0, 0, 1]], 
+   "Search for New Particles in Two-Jet Final States in 7 TeV Proton-Proton \
+Collisions with the ATLAS Detector at the LHC"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.6308136337576*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Status : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\"VALIDATED\"\>"}],
+  
+  SequenceForm[
+   Style["Status : ", 
+    RGBColor[0, 0, 1]], "VALIDATED"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633764563*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Authors : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"{Christopher Vermilion <verm@uw.edu>, Michele \
+Papucci <papucci@lbl.gov>}\"\>"}],
+  SequenceForm[
+   Style["Authors : ", 
+    RGBColor[0, 0, 1]], 
+   "{Christopher Vermilion <verm@uw.edu>, Michele Papucci <papucci@lbl.gov>}"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633771667*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"References : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"{arXiv:1008.2461}\"\>"}],
+  SequenceForm[
+   Style["References : ", 
+    RGBColor[0, 0, 1]], "{arXiv:1008.2461}"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.6308136337786493`*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"SpiresID : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\"8755477\"\>"}],
+  SequenceForm[
+   Style["SpiresID : ", 
+    RGBColor[0, 0, 1]], "8755477"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.63081363378575*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"InspireID : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\"865423\"\>"}],
+  SequenceForm[
+   Style["InspireID : ", 
+    RGBColor[0, 0, 1]], "865423"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.6308136337929487`*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"BibKey : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], "\[InvisibleSpace]", "\<\":2010bc\"\>"}],
+  SequenceForm[
+   Style["BibKey : ", 
+    RGBColor[0, 0, 1]], ":2010bc"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.6308136337999353`*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"Int. luminosity : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"0.00031 \[PlusMinus] 0.035 1/fb \"\>"}],
+  SequenceForm[
+   Style["Int. luminosity : ", 
+    RGBColor[0, 0, 1]], "0.00031 \[PlusMinus] 0.035 1/fb "],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633807304*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   StyleBox["\<\"References : \"\>",
+    StripOnInput->False,
+    LineColor->RGBColor[0, 0, 1],
+    FrontFaceColor->RGBColor[0, 0, 1],
+    BackFaceColor->RGBColor[0, 0, 1],
+    GraphicsColor->RGBColor[0, 0, 1],
+    FontColor->RGBColor[0, 0, 1]], 
+   "\[InvisibleSpace]", "\<\"{arXiv:1008.2461}\"\>"}],
+  SequenceForm[
+   Style["References : ", 
+    RGBColor[0, 0, 1]], "{arXiv:1008.2461}"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.630214707380014*^9, 3.630214725263468*^9}, 
+   3.630214775048931*^9, {3.630214880150403*^9, 3.630214942964283*^9}, 
+   3.630215114335925*^9, {3.630813615309757*^9, 3.630813633814735*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Efficiencies", "Subsubsection",
+ CellChangeTimes->{{3.630654581551428*^9, 3.630654584407552*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ListEfficiencies", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]], "Input",
+ CellChangeTimes->{3.6304136756370707`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"Efficiency\"\>", ",", "\<\"\"\>", ",", "False", ",", 
+     "0.133`", ",", 
+     RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Efficiency2\"\>", ",", "\<\"\"\>", ",", "False", ",", 
+     "0.133`", ",", 
+     RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.630413685212636*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"ListEfficiencies", "[", 
+   RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "ShowSubprocesses"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6304136756370707`*^9, 3.630413676933166*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"Efficiency\"\>", ",", "\<\"\"\>", ",", "False", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0.133`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"147", ",", "0.0505`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.00097`"}], ",", "0.00099`"}], "}"}]}], "}"}], ",", 
+       
+       RowBox[{"{", 
+        RowBox[{"148", ",", "0.0826`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.0012`"}], ",", "0.0012`"}], "}"}]}], "}"}]}], 
+      "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Efficiency2\"\>", ",", "\<\"\"\>", ",", "False", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0.133`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"147", ",", "0.0505`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.00097`"}], ",", "0.00099`"}], "}"}]}], "}"}], ",", 
+       
+       RowBox[{"{", 
+        RowBox[{"148", ",", "0.0826`", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.0012`"}], ",", "0.0012`"}], "}"}]}], "}"}]}], 
+      "}"}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.6304136853255033`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"ShowListEfficiencies", "[", 
+   RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6304136756370707`*^9, 3.630413677996972*^9}}],
+
+Cell[BoxData[
+ StyleBox["\<\"Efficiencies for ATLAS_1008_2461\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[0, 0, 1],
+  FrontFaceColor->RGBColor[0, 0, 1],
+  BackFaceColor->RGBColor[0, 0, 1],
+  GraphicsColor->RGBColor[0, 0, 1],
+  FontWeight->Bold,
+  FontColor->RGBColor[0, 0, 1]]], "Print",
+ CellChangeTimes->{3.630413685390759*^9}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Efficiency Name\"\>", "\<\"Description\"\>", "\<\"IsControlRegion\"\
+\>", "\<\"Efficiency Value\"\>", "\<\"Stat Error -\"\>", "\<\"Stat Error \
++\"\>"},
+    {"\<\"Efficiency\"\>", "\<\"\"\>", "False", "0.133`", 
+     RowBox[{"-", "0.0015`"}], "0.0015`"},
+    {"\<\"Efficiency2\"\>", "\<\"\"\>", "False", "0.133`", 
+     RowBox[{"-", "0.0015`"}], "0.0015`"}
+   },
+   AutoDelete->False,
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{3.630413685397965*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetEfficiency", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<Efficiency\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6304136756370707`*^9, 3.630413702036223*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"Efficiency\"\>", ",", "\<\"\"\>", ",", "False", ",", "0.133`", 
+   ",", 
+   RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.630413685473942*^9, 3.63041370390562*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetEfficiencyValue", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<Efficiency\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6304136756370707`*^9, 3.6304136809013357`*^9}}],
+
+Cell[BoxData["0.133`"], "Output",
+ CellChangeTimes->{3.63041368555653*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetEfficiencyStatError", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<Efficiency\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6304136756370707`*^9, 3.630413682253275*^9}, {
+  3.6306545306643953`*^9, 3.630654530995261*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"-", "0.0015`"}], ",", "0.0015`"}], "}"}]], "Output",
+ CellChangeTimes->{3.630413685644471*^9, 3.6306545317567244`*^9}]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Cuts", "Subsubsection",
+ CellChangeTimes->{{3.63065459123293*^9, 3.630654591663712*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ListCuts", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]], "Input",
+ CellChangeTimes->{3.630654495184086*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"J1J2_etaSep\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.155`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.73`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.081`"}], ",", "0.081`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.2446`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.075`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.064`"}], ",", "0.064`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"J2_pT\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"LeadJ_pT\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.356`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J2_pT\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.2948`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+        RowBox[{"-", "0.041`"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.058`"}], ",", "0.058`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_pT\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"NumJets\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.356`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0.541`", ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.053`"}], ",", "0.053`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"NumJets\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.99804`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"mjj\"\>", ",", "\<\"\"\>", ",", 
+     RowBox[{"{", 
+      RowBox[{"\<\"J1J2_etaSep\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0.133`", ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}], ",", "0.18`", ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.087`"}], ",", "0.087`"}], "}"}], ",", 
+        RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.630654496458282*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ShowListCuts", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\""}], "]"}]], "Input",
+ CellChangeTimes->{{3.630654495184086*^9, 3.630654497808053*^9}}],
+
+Cell[BoxData[
+ StyleBox["\<\" Cutflow for ATLAS_1008_2461\"\>",
+  StripOnInput->False,
+  LineColor->RGBColor[0, 0, 1],
+  FrontFaceColor->RGBColor[0, 0, 1],
+  BackFaceColor->RGBColor[0, 0, 1],
+  GraphicsColor->RGBColor[0, 0, 1],
+  FontWeight->Bold,
+  FontColor->RGBColor[0, 0, 1]]], "Print",
+ CellChangeTimes->{3.630654498923417*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetCut", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}],
+   "]"}]], "Input",
+ CellChangeTimes->{{3.630654495184086*^9, 3.630654501160162*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"J2_etaRange\"\>", ",", "\<\"\"\>", ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"LeadJ_etaRange\"\>", ",", "\<\"Passed\"\>"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0.2446`", ",", 
+      RowBox[{"{", "\<\"None\"\>", "}"}], ",", 
+      RowBox[{"-", "0.075`"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.064`"}], ",", "0.064`"}], "}"}], ",", 
+      RowBox[{"{", "\<\"None\"\>", "}"}]}], "}"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.630654502094699*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetCutValue", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}],
+   "]"}]], "Input",
+ CellChangeTimes->{{3.630654495184086*^9, 3.630654503750925*^9}}],
+
+Cell[BoxData["0.2446`"], "Output",
+ CellChangeTimes->{3.630654504743081*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GetCutError", "[", 
+  RowBox[{"res", ",", "\"\<ATLAS_1008_2461\>\"", ",", "\"\<J2_etaRange\>\""}],
+   "]"}]], "Input",
+ CellChangeTimes->{{3.630654495184086*^9, 3.630654503750925*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"-", "0.064`"}], ",", "0.064`"}], "}"}]], "Output",
+ CellChangeTimes->{3.630654507604582*^9}]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Routines for YODA plotting", "Subchapter",
+ CellChangeTimes->{{3.6302388380490828`*^9, 3.630238842215825*^9}, 
+   3.63024020920817*^9}],
+
+Cell[TextData[{
+ "\nfrom: ",
+ ButtonBox["https://yoda.hepforge.org/trac/wiki/DataFormat\t",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://yoda.hepforge.org/trac/wiki/DataFormat"], None},
+  ButtonNote->"https://yoda.hepforge.org/trac/wiki/DataFormat"],
+ "\n\n----\t\n\[Bullet] Each data object is wrapped with type-specific \
+BEGIN...END lines, to trigger the processing of the contained data in the \
+correct way.\n\[Bullet] The hash sign (#) is to be interpreted as a comment \
+character in the manner of Python. Need some way to declare that a comment is \
+actually a header?\n\[Bullet] An arbitrary number of headers may be present \
+on each object. We recommend that these headers are escaped by a prefix # \
+character, for compatibility with gnuplot\n\[Bullet] For compatibility with \
+gnuplot, the first 6 ??? data columns of records must be compatible with the \
+gnuplot \[OpenCurlyDoubleQuote]plot with xyerrors\[CloseCurlyDoubleQuote] \
+format, namely: x, y, xlow, xhigh, ylow, yhigh\n\n\nHISTO1D \nThe main data \
+type.\nxcenter, ycenter, xlow, xhigh, ylow, yhigh, sumw, sumw2, sumwx, sumwx2\
+\n\n",
+ "# xlow\t xhigh\t sumw\t sumw2\t sumwx\t sumwx2\t numEntries",
+ "\n----"
+}], "Text",
+ CellChangeTimes->{{3.63032833549842*^9, 3.630328416396579*^9}, {
+  3.630328540741417*^9, 3.630328552603384*^9}, {3.6303299386404*^9, 
+  3.630329940243088*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetHistRaw", "[", "fileName_", "]"}], ":=", " ", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"tempYoda", "=", 
+       RowBox[{"Import", "[", 
+        RowBox[{"fileName", ",", "\"\<Table\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"posL", "=", 
+       RowBox[{
+        RowBox[{"Position", "[", 
+         RowBox[{"tempYoda", ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<#\>\"", ",", "\"\<BEGIN\>\"", ",", "___"}], "}"}]}], 
+         "]"}], "//", "Flatten"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"nHistos", " ", "=", " ", 
+       RowBox[{"Length", "[", " ", "posL", " ", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"outHistos", "=", 
+       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Collect", " ", "histograms", " ", "into", " ", "list"}], ",",
+         "\[IndentingNewLine]", 
+        RowBox[{
+        "with", " ", "position", " ", "of", " ", "beginning", " ", "of", " ", 
+         
+         RowBox[{"histos", " ", "'"}], 
+         RowBox[{"posL", "'"}]}], ",", " ", "\[IndentingNewLine]", 
+        RowBox[{"split", " ", "output", " ", "into", " ", "lists"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+        "be", " ", "careful", " ", "with", " ", "last", " ", "histo", " ", 
+         "which", " ", "goes", " ", 
+         RowBox[{"from", " ", "'"}], 
+         RowBox[{"BEGIN", "'"}], " ", "to", " ", "the", " ", "end", " ", "of",
+          " ", "the", " ", "file"}]}], "\[IndentingNewLine]", "*)"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"outHistos", ",", "\[IndentingNewLine]", " ", 
+           RowBox[{"(*", 
+            RowBox[{"cleanup", " ", "comments"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{"DeleteCases", "[", " ", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"tempYoda", "\[LeftDoubleBracket]", " ", 
+              RowBox[{
+               RowBox[{"posL", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], " ", ";;", " ", 
+               RowBox[{"If", "[", " ", 
+                RowBox[{
+                 RowBox[{"i", " ", "<", " ", "nHistos"}], "  ", ",", " ", 
+                 RowBox[{
+                  RowBox[{"posL", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", "+", "1"}], "]"}], "]"}], "-", "1"}], ",", 
+                 " ", 
+                 RowBox[{"Length", "[", "tempYoda", "]"}]}], " ", "]"}]}], 
+              " ", "\[RightDoubleBracket]"}], " ", "\[IndentingNewLine]", ",", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"\"\<#\>\"", ",", "___"}], "}"}], "|", 
+              RowBox[{"{", 
+               RowBox[{"\"\<###\>\"", ",", "___"}], "}"}], "|", 
+              RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "nHistos"}], "}"}]}], "\[IndentingNewLine]", "]"}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", "outHistos"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", ")"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"HistogramPlot", "[", 
+    RowBox[{"histo_", ",", "HistogramOptions___"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "high", ",", "low", ",", "plotInput", ",", "HistData", ",", "HistTitle",
+        ",", "overFlow", ",", "underFlow", ",", "Nbins", ",", 
+       "HistTitleString"}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"HistTitle", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Path=\>\"", "~~", "___"}]}], "]"}], "&"}]}], "]"}]}],
+       ";", "\[IndentingNewLine]", 
+      RowBox[{"HistTitleString", "=", 
+       RowBox[{
+        RowBox[{"StringSplit", "[", 
+         RowBox[{
+          RowBox[{"HistTitle", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", "\"\<=\>\""}], "]"}], 
+        "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"underFlow", " ", "=", " ", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Underflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
+        "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
+        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"overFlow", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Overflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
+        "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
+        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"HistData", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"NumericQ", "[", 
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"plotInput", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "3", "]"}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], " ", "\[LessEqual]", "x", "<", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], "&"}], " ", "/@", " ",
+         "HistData"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"low", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"First", "[", "HistData", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"high", "=", 
+       RowBox[{
+        RowBox[{"Last", "[", "HistData", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Nbins", "=", 
+       RowBox[{"Length", "[", "HistData", "]"}]}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
+      RowBox[{"Plot", "[", 
+       RowBox[{
+        RowBox[{"Piecewise", "[", "plotInput", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "low", ",", "high"}], "}"}], ",", 
+        "HistogramOptions", ",", 
+        RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+        RowBox[{"Exclusions", "\[Rule]", "None"}], ",", 
+        RowBox[{"PlotPoints", "\[Rule]", 
+         RowBox[{"3", 
+          RowBox[{"(", "Nbins", ")"}]}]}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"PlotLabel", "->", "HistTitleString"}]}], "]"}]}]}], "\n", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.630238850650148*^9, 3.630238856233121*^9}, {
+   3.630238896861823*^9, 3.630238917604951*^9}, {3.6302400451387863`*^9, 
+   3.6302400926808977`*^9}, {3.630240127947644*^9, 3.6302401403826933`*^9}, {
+   3.630240493382957*^9, 3.630240651207631*^9}, 3.630240718867569*^9, {
+   3.6302407593239*^9, 3.630240941581744*^9}, {3.630241014698352*^9, 
+   3.6302410373223953`*^9}, {3.6302411688735456`*^9, 3.630241205731948*^9}, {
+   3.630241354364737*^9, 3.6302414455042057`*^9}, {3.6302415702863894`*^9, 
+   3.630241886589596*^9}, 3.630241945610559*^9, 3.630242030874469*^9, 
+   3.6302423871117077`*^9, {3.630242441376932*^9, 3.630242469403804*^9}, 
+   3.6302425132155437`*^9, {3.630242558066585*^9, 3.630242560393961*^9}, {
+   3.630242619539474*^9, 3.630242734671693*^9}, {3.6302428027973557`*^9, 
+   3.630242890386389*^9}, {3.630327500167123*^9, 3.6303277089707127`*^9}, {
+   3.6303277549316483`*^9, 3.630327890445674*^9}, {3.630328429906846*^9, 
+   3.6303284833947983`*^9}, {3.630329911372179*^9, 3.630329911514413*^9}, {
+   3.6303337414212*^9, 3.630333791326418*^9}, {3.630335180569305*^9, 
+   3.630335188969454*^9}, {3.630341497389995*^9, 3.630341501691437*^9}, {
+   3.630344024841921*^9, 3.630344025839368*^9}, {3.6303441392085953`*^9, 
+   3.6303441844089403`*^9}, {3.63038612129858*^9, 3.630386124652351*^9}, 
+   3.630393900430814*^9, {3.630395261579815*^9, 3.6303953105141897`*^9}, {
+   3.6303953938311996`*^9, 3.6303954622048397`*^9}, {3.630402295296741*^9, 
+   3.6304023029394093`*^9}, {3.630402346289517*^9, 3.630402349902656*^9}, {
+   3.630402901918021*^9, 3.6304029122872267`*^9}, 3.630408912063067*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Examples", "Subsection",
+ CellChangeTimes->{{3.630395338609168*^9, 3.6303953584587584`*^9}}],
+
+Cell["\<\
+
+Get\[CloseCurlyQuote]s a list of histograms and plots them\
+\>", "Text",
+ CellChangeTimes->{{3.630395367921434*^9, 3.630395376770091*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"test", "=", 
+    RowBox[{"(", 
+     RowBox[{"GetHistRaw", "[", 
+      RowBox[{"wdir", "<>", "\"\<input_files/Qstar_500_truth.yoda\>\""}], 
+      "]"}], ")"}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h1", "=", 
+   RowBox[{"HistogramPlot", "[", 
+    RowBox[{
+     RowBox[{"test", "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"Dashed", ",", "Red"}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h2", "=", 
+   RowBox[{"HistogramPlot", "[", 
+    RowBox[{
+     RowBox[{"test", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"Dotted", ",", "Blue"}], "}"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h3", "=", 
+   RowBox[{"HistogramPlot", "[", 
+    RowBox[{
+     RowBox[{"test", "[", 
+      RowBox[{"[", "3", "]"}], "]"}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Green"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Show", "[", 
+  RowBox[{"h1", ",", "h2", ",", "h3", ",", 
+   RowBox[{"PlotRange", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"200", ",", "800"}], "}"}], ",", "All"}], "}"}]}]}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.630238850650148*^9, 3.630238856233121*^9}, {
+   3.630238896861823*^9, 3.630238917604951*^9}, {3.6302400451387863`*^9, 
+   3.6302400926808977`*^9}, {3.630240127947644*^9, 3.6302401403826933`*^9}, {
+   3.630240493382957*^9, 3.630240651207631*^9}, 3.630240718867569*^9, {
+   3.6302407593239*^9, 3.630240941581744*^9}, {3.630241014698352*^9, 
+   3.6302410373223953`*^9}, {3.6302411688735456`*^9, 3.630241205731948*^9}, {
+   3.630241354364737*^9, 3.6302414455042057`*^9}, {3.6302415702863894`*^9, 
+   3.630241886589596*^9}, 3.630241945610559*^9, 3.630242030874469*^9, 
+   3.6302423871117077`*^9, {3.630242441376932*^9, 3.630242469403804*^9}, 
+   3.6302425132155437`*^9, {3.630242558066585*^9, 3.630242560393961*^9}, {
+   3.630242619539474*^9, 3.630242734671693*^9}, {3.6302428027973557`*^9, 
+   3.630242890386389*^9}, {3.630327500167123*^9, 3.6303277089707127`*^9}, {
+   3.6303277549316483`*^9, 3.630327890445674*^9}, {3.630328429906846*^9, 
+   3.6303284833947983`*^9}, {3.630329911372179*^9, 3.630329911514413*^9}, {
+   3.6303337414212*^9, 3.630333791326418*^9}, {3.630335180569305*^9, 
+   3.630335188969454*^9}, {3.630341497389995*^9, 3.630341501691437*^9}, {
+   3.630344024841921*^9, 3.630344025839368*^9}, {3.6303441392085953`*^9, 
+   3.6303441844089403`*^9}, {3.63038612129858*^9, 3.630386124652351*^9}, 
+   3.630393900430814*^9, {3.630395261579815*^9, 3.630395285488141*^9}, {
+   3.6303953444223957`*^9, 3.630395359740972*^9}, 3.6303954537149563`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  GraphicsBox[{{{}, {}, 
+     {RGBColor[1, 0, 0], AbsoluteThickness[1.6], Opacity[1.], 
+      Dashing[{Small, Small}], LineBox[CompressedData["
+1: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
+       "]]}}, {{}, {}, 
+     {RGBColor[0, 0, 1], AbsoluteThickness[1.6], Opacity[1.], 
+      Dashing[{0, Small}], LineBox[CompressedData["
+1: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
+
+       "]]}}, {{}, {}, 
+     {RGBColor[0, 1, 0], AbsoluteThickness[1.6], Opacity[1.], 
+      LineBox[CompressedData["
+1:eJxN13k01ekfB3AUbiRkDaksKZGl+N2y3SuUkmRoQRJjSbbItRPJHqVsjZSl
+yE5KQsoylS2kRAZzTRKy3CS7X9Nvft/3fP55zut8nuWcZz3PFmtXY1sWJiYm
+N2Ympr/Lknj77UxMZyktzc3NcupsVM071YlvFBwJNxbwrc4+fY4w2wK790oJ
+rH1gcfT4aifCI+2+8xnr4Gvmc6RxYZj80Utoj6QTxe5HlD5bTR1wmZEOlYcV
+Qr5qi2jDgQmTp4uPwWJVIym9QXAl/a83pPvw7oCWyorDzoTzhR5lOjLg6UN8
+t5RiXAhrXHRLnJV2JWwtsomv1x0OK2uJq6mBG8NtVsxf/c8hV5io3OZzLrMd
+sMnOuL4bvXAys7Sh0hC8JcdI3nEONpXRDDvK5ka4r+WsbdQG2P5Cgk6dHEyj
+5K4Oq4Mvr62pP2B2HvksPuqOS7CdukM1Vz5sbR1gofcItoyIXwh8BluIbjz0
+WwNsVph9s7wRPkFVHnnzGj7WWbVnsvM8Ja722zay7leK4eZPXmc+w3pOvI86
+lmCZ1CeFSUfcCZOabbIt0uGbDbK5i3s8CO+omcpP7YATB68NveiCmUjKm7/2
+wo5yHSfF6R6U7RZxtVcyximdRu7X9T/BOSmlbHemYH86w2dmAZa64GGVyXOB
+cAvrtJ6RNCy+/RtfriHsajAzsMob5r0+61veCD/onuc/t9GTMHnsRHyqC1y9
+/Ii7tQa2vLTOVaQTZiLZtdoNw0aNvMsxDDg9plr+wSLc6Hxd93dmGmGG4dlT
+3WywiKKW5xgnrM0rcGWFh0bMX6hI/aHkPfALSQ8OJWs4g54pmDsH+6d3Skhe
+8yJc2xhN3TcIr5nWtrJR8SZs9nTSflQfzo9Ic/WwhCkLkecTbOC3zp4e5Q6w
+44CVZ7czvGxs4LXg7v1zP4orclBlyJJ+WgGw0cb5wEvh8NcS09jrxXCiXsmt
+zO5/5ZVvjM25+6D9Ji81o7W+hK3P6Oj5HIcvZPIezciAA3S836m+hMM+9pk3
+fYGzK6LHAhi+lB9XL1MPuwr15RVygOJ3+POZj1yDCzCHanxaApMfYYO+0Zr5
+NXBsmO6fp/ng9V2zkrJb4SSZfLtpMuykFVrA1QtrH7eY3hrkT1igOOSOZhM8
+TLpvcEwogLCxSpWEtQZceeb1rLMNPPn9/aAHDZaKpbf6RMKaJ+3rF+Phk1Jj
+FUGp8FBk4W5q+k9TQhWNqRcm3IpY7sHMprtk63Ph2Cffsi4XwUMrQTv9TQIJ
+a+lyPHafgy0lDEi2vwURfrqil58nfpGwvL21stg2OLU14HGMEmwSEr2gowpz
+qqZoLu2Fh7g3W53UgGs/3wt+qAWn1cln8mpfpOz6EaRkGarvrbJ6Zx34hNNo
+m+FxWFVN4g8FR5jxPu7bVBxcQFviKnsIL/t5df3GHkz4SPDUnUsnYadcTo7q
+IDjijbTHzF349SmnltAiWHC4VIavAt4r/86kpxo+5T4XnF4Lj/NHC7M2wBfL
+xYocXsDrzQp1m18FU26mpKRIq5KoWYtavQrNsDJvy1WDfvi5tJnuWQb8hipf
+rKUbQvjjKSZRwWS4R1fhrONnuE3esvzp3kuESX7CVx4dhrVedlgXWsFDvFGn
+uGzgGPMfS2IL77o7a9xkD/eMFx2Wdbz083wLyi5StoWI7xt2gWkCV8j3POD1
+6o6SEgFwofX+dWlhsNhSZcWVfDg6SdE2oAPWTnxs8kwqlPDsDYrOKi84cSBE
+vb0OVpFr2H2b5zLG4wpi/CIAb50gF5NEYHq/ALeNGJzWxnCuFofNnr9uFtpy
+mXg/BEvzd7hLwmyem7M/yMEz/7khoasKv6v22yCsD5fvs+EZNYe9jygvXw2G
+95gzj6lmwzfUNa2GZuGJjX6dCQfDCCsbuB9tS4Q9fc+2cgzC3nvErll+gf1n
+W38p/Q5r5Pjp7J8Po2S5aXAUVX+kLB/fptK7CNewv5U+vwJfLA8WZGMJJ8wi
+9OG7AjscStvdfXItHD2dYsm8BY53XxnMUYHvuDSOf7eECx0T5vQi/uWd4Qzr
+briA4T0aKBtB+MYq6S/SNNifv328+Tnc6Sqiva4ZlmuySTjyDn7vTdJy+wCH
+bi0YvjoAmwUEaWwZhBU7j8aXfITZdkh9og5HULoy3TSibvdTeoNn1DpG4Bhy
+JN1kBdaYEI3s4osknGZBfderDi+/spOk28LZU+d+9yqFjTacP8u1Aveu7ZjY
+fDCKsAPTLtruBFi0v5R1shpurVZOyBuCsyok2OtGYd+H6316JmHbBxzKdl9h
+oxKW0alvsHrRfGbAbBRl0+XRo8l5TRSZAobFmgW4M6uDQmaNJnwxtVTKnhvu
+iXYfq5eEd/kpl0mQ/1X/8tgHqVC4Ne7eKpk2WJR8IpRxIYYw2TdQsHPdFcJi
+JhauJXfh0udec6b6sYRtG7T2P0iAhV+xJ/DQ4T4FNdJ5zjjCWYkufu27YfaD
+pIfB+rDjUvq4kiUs1uXCGeUAtxarbaO7w3s/uSh4e8LZGzNU13nHUf705S/M
+Li+n8Ju81cjyhS9GkXT3BsAnvrv8YhcCK/369kx8OHxnKWlH+3s4/FDBPLvA
+VcL9SrIt7Vbw7JrHIcORMA9dl7xSCh87o2Yq/zucOqDobt4Na93Ju8igw/TT
+W+Mix+Am7gbjiXG4rMZG0HQKzhHaNRvOgG+5svQ8+QrHv2iv/DJ99Z/9V0QJ
+25R+a/MMfCKoT2psHt7eL5pfvgJn15V1GUtfIyydc3jV+EF4fq/41/BUuFzk
+/mj+MBwyobF7ijeesGF9h7+KGizVk5Xoow7PT9CKqzXgNlb9RmYt+J6o6F+6
+lPif9/HDujqK8f4aoVZteMnd5tAxXdikMa/U7iCcv2V6g9cR2KItdDjpJMwZ
+JFD+2AZ27FU1mfeCX+45MaUWA8+JzBatLoVlF5NcWrpg2whaaO3264Rnpmuv
+sxjBEWe4M7Vp8P6Df1xdiILZduUFlt2G43kjuJjSr/8zHzUU8clfUw9lwLmt
+1B1JmbBqgfgTehZs6Pi+yycbtpOJ/8aTCyemsyppFcENoj5OzmWwFI/V4Kun
+cOjq/WZbX8HTlVdluqZgG4+e6XCRG4RlFbYlX7CDm8r4O+sfwzziDjTlftgk
+vFL4DmsCYbUStTxTDljiQ6UGJzcsMLnAZscLk1jV257xwSHcvbvH+f/v25TF
+Df4pooIwTUps+YAQPLGzypomDFeFVIX/uQWOeleVb7ADlg6snpHQhJ9JP6XM
+GcH07nXpXT4wa+xp5kcZsPK+ysalcZhc+1DuPjWRsATXWveOeHg6S+xZWB98
+m635XppiEvp7qJJIDYBzFBYcrF/CbUcL0qSm4O8epzuHNiQTFtcbrHWQhHWE
+7UtG5OATzPdz8pTgcyMjt51U4em+aNEWMhz4Ri5JXg2uO7zUeUo9+ef/7u8g
+vWxZH6sBH9ZOM3qqCcdXucSOa8FdqlrN4lRYrISb44g2fO9u8eUiHbgiluHv
+pg8PWNHOMYzhnayBB2Zs4ZvzxfwUe5htcnAg0gHu79H32XgOvloskKvjBjPM
+Cziv+8KPSntbFeJgLSs107OPYTLpgaM9awphfv8wm0Ej+FXF7HRtBiwsyfOZ
+PQt2iJH5w+AuTDp9rOFdNqy3uixhJB+uNXRVXV8OPxn86HWmCeY4vHTuXjN8
+8hG/1WgLPBux74BnG6y6M1048i1c6m1RUdwPs9A9Cr4NwEcPRafvpcOTG59E
+1v8F76wTMnv/GQ6UUzDcOAq3JOhpW4/BTg6esmPjcFV7jLjSJMyplrWeNgWb
+ZVWyVTLgXK438ytf4f8Ctg3zqg==
+       "]]}}},
+   AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+   Axes->{True, True},
+   AxesLabel->{None, None},
+   AxesOrigin->{200., 0},
+   DisplayFunction->Identity,
+   Frame->{{True, True}, {True, True}},
+   FrameLabel->{{None, None}, {None, None}},
+   FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+   GridLines->{None, None},
+   GridLinesStyle->Directive[
+     GrayLevel[0.5, 0.4]],
+   ImageSize->{376.8671875, Automatic},
+   Method->{"DefaultBoundaryStyle" -> Automatic, "ScalingFunctions" -> None},
+   PlotLabel->FormBox["\"/ATLAS_1008_2461/d01-x01-y01/0\"", TraditionalForm],
+   PlotRange->{{200, 800}, All},
+   PlotRangeClipping->True,
+   PlotRangePadding->{{
+      Scaled[0.02], 
+      Scaled[0.02]}, {
+      Scaled[0.05], 
+      Scaled[0.05]}},
+   Ticks->{Automatic, Automatic}], 
+  RowBox[{"\[AliasDelimiter]", "\[AliasDelimiter]"}]}]], "Input",
+ CellChangeTimes->{{3.6304089324625*^9, 3.630408932769343*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["attic", "Title",
+ CellChangeTimes->{{3.6303277158773108`*^9, 3.630327716796235*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"tempYoda", "=", 
+    RowBox[{"Split", "[", 
+     RowBox[{"tempYoda2", ",", 
+      RowBox[{
+       RowBox[{"StringMatchQ", "[", 
+        RowBox[{"#", ",", "\"\<Path\>\""}], "]"}], "&"}]}], "]"}]}], "*)"}], 
+  "\n", "\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"tempYoda", "=", " ", 
+     RowBox[{"SplitBy", "[", 
+      RowBox[{"tempYoda", ",", 
+       RowBox[{
+        RowBox[{"delimiterQ", "[", 
+         RowBox[{"#", "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"outNew", "=", 
+      RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Do", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"AppendTo", "[", 
+        RowBox[{"outNew", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"tempYoda", "[", 
+            RowBox[{"[", "n", "]"}], "]"}], ",", 
+           RowBox[{"tempYoda", "[", 
+            RowBox[{"[", 
+             RowBox[{"n", "+", "1"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"n", ",", "1", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "tempYoda", "]"}], "/", "2"}]}], "}"}]}], 
+      "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"out", "=", "outNew"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Contains \>\"", ",", " ", 
+      RowBox[{
+       RowBox[{"Length", "[", "tempYoda", "]"}], "/", "2"}], ",", 
+      "\"\< Histograms\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"out", "=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"#", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", 
+        RowBox[{"#", "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], "}"}], "&"}], "/@", 
+     "tempYoda"}]}]}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"OV", ":=", "OptionValue"}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"save", " ", "space"}], "*)"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "all", " ", "the", " ", "contents", " ", "of", " ", "an", " ", 
+      "analysis"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"PickAnalysis", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", 
+     RowBox[{"OV", "[", 
+      RowBox[{
+       RowBox[{"OV", "[", 
+        RowBox[{
+         RowBox[{"{", "json", "}"}], ",", "\"\<Analyses\>\""}], "]"}], ",", 
+       "anaName"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetVal", "[", 
+      RowBox[{"json_", ",", "entrName_"}], "]"}], ":=", 
+     RowBox[{"OV", "[", 
+      RowBox[{
+       RowBox[{"OV", "[", 
+        RowBox[{"json", ",", "entrName"}], "]"}], ",", "\"\<Value\>\""}], 
+      "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetVal", "[", 
+      RowBox[{"json_", ",", "entrName_", ",", "valName_"}], "]"}], ":=", 
+     RowBox[{"OV", "[", 
+      RowBox[{
+       RowBox[{"OV", "[", 
+        RowBox[{"json", ",", "valName"}], "]"}], ",", "valName"}], "]"}]}], 
+    ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"e", ".", "g", ".", " ", "for"}], " ", "\"\<Cut Value\>\""}], 
+     "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"PrintValue", "[", 
+      RowBox[{"json_", ",", "valName_"}], "]"}], ":=", 
+     RowBox[{"Print", "[", " ", 
+      RowBox[{
+       RowBox[{"Style", "[", 
+        RowBox[{
+         RowBox[{"valName", " ", "<>", " ", "\"\< : \>\""}], " ", ",", 
+         "Blue"}], "]"}], ",", " ", 
+       RowBox[{"ToString", "[", 
+        RowBox[{"OV", "[", 
+         RowBox[{"ana", ",", "valName"}], "]"}], "]"}]}], "]"}]}], ";", " ", 
+    RowBox[{"(*", " ", 
+     RowBox[{"for", " ", "simple", " ", 
+      RowBox[{"Value", "/", "Error"}], " ", "pairs"}], " ", "*)"}], 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+     "******)"}], "\[IndentingNewLine]", 
+    RowBox[{"(*", "       ", 
+     RowBox[{"PRINT", " ", "OUTPUT"}], "    ", "*)"}], "\[IndentingNewLine]", 
+    
+    RowBox[{"(*", 
+     RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+     "******)"}], "\[IndentingNewLine]", "\n", 
+    RowBox[{
+     RowBox[{"ShowAnalysisInfo", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", "\[IndentingNewLine]", 
+     
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", " ", 
+        RowBox[{"Style", "[", 
+         RowBox[{"anaName", ",", "Bold"}], "]"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Summary\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", " ", 
+        RowBox[{
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Int. luminosity : \>\"", ",", "Blue"}], "]"}], "  ", 
+         ",", " ", 
+         RowBox[{
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"GetVal", "[", 
+             RowBox[{"ana", ",", "\"\<Luminosity\>\""}], "]"}], "/", 
+            "1000."}], "]"}], " ", "<>", " ", "\"\< 1/fb \>\""}]}], "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<References\>\""}], "]"}], ";"}], 
+      "\[IndentingNewLine]", ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowFullAnalysisInfo", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", " ", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", " ", 
+        RowBox[{"Style", "[", 
+         RowBox[{"anaName", ",", "Bold", ",", "Blue"}], "]"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Summary\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Experiment\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Year\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Description\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<RunInfo\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Status\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<Authors\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<References\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<SpiresID\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<InspireID\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<BibKey\>\""}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", " ", 
+        RowBox[{
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<Int. luminosity : \>\"", ",", "Blue"}], "]"}], "  ", 
+         ",", " ", 
+         RowBox[{
+          RowBox[{"ToString", "[", 
+           RowBox[{
+            RowBox[{"GetVal", "[", 
+             RowBox[{"ana", ",", "\"\<Luminosity\>\""}], "]"}], "/", 
+            "1000."}], "]"}], " ", "<>", " ", "\"\< \[PlusMinus] \>\"", " ", "<>",
+           "  ", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"OV", "[", 
+            RowBox[{
+             RowBox[{"OV", "[", 
+              RowBox[{"ana", ",", "\"\<Luminosity\>\""}], "]"}], ",", 
+             "\"\<Error\>\""}], "]"}], "]"}], "<>", "\"\< 1/fb \>\""}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"PrintValue", "[", 
+        RowBox[{"ana", ",", "\"\<References\>\""}], "]"}], ";"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+    "******)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", "   ", 
+    RowBox[{"EXTRACT", " ", "EFFIENCIES"}], "   ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+    "******)"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ListEfficiencies", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "ShowSubprocesses"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Efficiency Name\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<IsControlRegion\>\""}], "]"}], ",", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"OV", "[", 
+                 RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}], ",", 
+                RowBox[{"OV", "[", 
+                 RowBox[{"#", ",", "\"\<Efficiency Value\>\""}], "]"}], ",", 
+                RowBox[{"OV", "[", 
+                 RowBox[{"#", ",", "\"\<Efficiency Stat Error\>\""}], "]"}]}],
+                "}"}], "&"}], "/@", 
+             RowBox[{"OV", "[", 
+              RowBox[{"#", ",", "\"\<Data\>\""}], "]"}]}], ")"}]}], "}"}], 
+         "&"}], "  ", "/@", " ", 
+        RowBox[{"OV", "[", 
+         RowBox[{"ana", ",", "\"\<Efficiencies\>\""}], "]"}]}]}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Name\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Value\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Error\>\""}], "]"}], ",", 
+              "\"\<Stat\>\""}], "]"}], " ", ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}]}], " ", 
+           "}"}], "&"}], " ", "/@", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Efficiency Name\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{
+             RowBox[{"OV", "[", 
+              RowBox[{"#", ",", "\"\<Error\>\""}], "]"}], ",", 
+             "\"\<Stat\>\""}], "]"}], " ", ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}]}], " ", 
+          "}"}]}], "&"}], " ", "*)"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowListEfficiencies", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"Style", "[", 
+         RowBox[{
+          RowBox[{"\"\<Efficiencies for \>\"", "<>", "anaName"}], ",", "Blue",
+           ",", "Bold"}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{
+            "\"\<Efficiency Name\>\"", ",", "\"\<Description\>\"", ",", 
+             "\"\<IsControlRegion\>\"", ",", "\"\<Efficiency Value\>\"", ",", 
+             "\"\<Stat Error -\>\"", ",", "\"\<Stat Error +\>\""}], "}"}], 
+           "}"}], ",", " ", 
+          RowBox[{"ListEfficiencies", "[", 
+           RowBox[{"json", ",", "anaName"}], "]"}]}], "]"}], "//", "Grid"}]}],
+       "\[IndentingNewLine]", ")"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetTotEfficiency", "[", "jsonEffiency_", "]"}], ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Efficiency Value\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Efficiency Stat Error\>\""}], "]"}]}], 
+             "}"}], "&"}], "/@", 
+           RowBox[{"OV", "[", 
+            RowBox[{"jsonEffiency", ",", "\"\<Data\>\""}], "]"}]}], ")"}], 
+         ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "==", "0"}], "&"}]}], "]"}], "[", 
+       
+       RowBox[{"[", 
+        RowBox[{"1", ",", "2"}], "]"}], "]"}], ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetTotStatError", "[", "jsonEffiency_", "]"}], ":=", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Efficiency Value\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Efficiency Stat Error\>\""}], "]"}]}], 
+             "}"}], "&"}], "/@", 
+           RowBox[{"OV", "[", 
+            RowBox[{"jsonEffiency", ",", "\"\<Data\>\""}], "]"}]}], ")"}], 
+         ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "==", "0"}], "&"}]}], "]"}], "[", 
+       
+       RowBox[{"[", 
+        RowBox[{"1", ",", "3"}], "]"}], "]"}], ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ListEfficiencies", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"temp", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Efficiency Name\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<IsControlRegion\>\""}], "]"}], ",", " ", 
+            RowBox[{"GetTotEfficiency", "[", "#", "]"}], ",", " ", 
+            RowBox[{
+             RowBox[{"GetTotStatError", "[", "#", "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"GetTotStatError", "[", "#", "]"}], "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], "}"}], "&"}], "  ", "/@", " ", 
+         
+         RowBox[{"OV", "[", 
+          RowBox[{"ana", ",", "\"\<Efficiencies\>\""}], "]"}]}]}]}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Name\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Value\>\""}], "]"}], ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Error\>\""}], "]"}], ",", 
+              "\"\<Stat\>\""}], "]"}], " ", ",", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}]}], " ", 
+           "}"}], "&"}], " ", "/@", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Efficiency Name\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{
+             RowBox[{"OV", "[", 
+              RowBox[{"#", ",", "\"\<Error\>\""}], "]"}], ",", 
+             "\"\<Stat\>\""}], "]"}], " ", ",", 
+           RowBox[{"OV", "[", 
+            RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}]}], " ", 
+          "}"}]}], "&"}], " ", "*)"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetEfficiency", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "effName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Select", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Efficiency Name\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<IsControlRegion\>\""}], "]"}], ",", " ", 
+              RowBox[{"GetTotEfficiency", "[", "#", "]"}], ",", " ", 
+              RowBox[{
+               RowBox[{"GetTotStatError", "[", "#", "]"}], "[", 
+               RowBox[{"[", "1", "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{"GetTotStatError", "[", "#", "]"}], "[", 
+               RowBox[{"[", "2", "]"}], "]"}]}], "}"}], "&"}], "  ", "/@", 
+           " ", 
+           RowBox[{"OV", "[", 
+            RowBox[{"ana", ",", "\"\<Efficiencies\>\""}], "]"}]}], ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "effName"}], "&"}]}],
+          "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "\[IndentingNewLine]", ")"}]}], 
+    ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetEfficiencyValue", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "effName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"GetEfficiency", "[", 
+        RowBox[{"json", ",", "anaName", ",", "effName"}], "]"}], "[", 
+       RowBox[{"[", "4", "]"}], "]"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetEfficiencyStatError", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "effName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"GetEfficiency", "[", 
+        RowBox[{"json", ",", "anaName", ",", "effName"}], "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{"5", ";;", "6"}], "]"}], "]"}], "\[IndentingNewLine]", 
+      ")"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+    "******)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", "   ", 
+    RowBox[{"EXTRACT", " ", "CUTS"}], "   ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+    "******)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetSubProc0", "[", "jsonSub_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Select", "[", 
+       RowBox[{"jsonSub", ",", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"#", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "==", "0"}], "&"}]}], "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "assumes", " ", "that", " ", "procID", " ", "is", " ", "first", " ", 
+      RowBox[{"entry", "!"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ListCuts", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "ShowSubprocesses"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ana", "=", 
+        RowBox[{"PickAnalysis", "[", 
+         RowBox[{"json", ",", "anaName"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"temp", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Cut Name\>\""}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Description\>\""}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"OV", "[", 
+             RowBox[{"#", ",", "\"\<Parent Cut\>\""}], "]"}], ",", " ", 
+            "\[IndentingNewLine]", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Sub-process ID\>\""}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Cut Value\>\""}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Cut Value Flags\>\""}], "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Cut Log. Derivative\>\""}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Cut Log. Der. Stat Error\>\""}], 
+                  "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"OV", "[", 
+                  RowBox[{"#", ",", "\"\<Cut Log. Der. Flags\>\""}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], "&"}], "\[IndentingNewLine]", "/@", 
+              RowBox[{"OV", "[", 
+               RowBox[{"#", ",", "\"\<Data\>\""}], "]"}]}], ")"}]}], "}"}], 
+          "&"}], "  ", "\[IndentingNewLine]", "/@", " ", 
+         RowBox[{"OV", "[", 
+          RowBox[{"ana", ",", "\"\<Cuts\>\""}], "]"}]}]}]}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ListCuts", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"#", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", 
+          RowBox[{"#", "[", 
+           RowBox[{"[", "2", "]"}], "]"}], ",", 
+          RowBox[{"#", "[", 
+           RowBox[{"[", "3", "]"}], "]"}], ",", 
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "4", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"#", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "0"}], "&"}]}], 
+           "]"}]}], "}"}], "&"}], "/@", " ", 
+       RowBox[{"ListCuts", "[", 
+        RowBox[{"json", ",", "anaName", ",", "ShowSubprocesses"}], "]"}]}], 
+      "\[IndentingNewLine]", ")"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowListCuts", "[", 
+      RowBox[{"json_", ",", "anaName_"}], "]"}], ":=", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"Style", "[", " ", 
+        RowBox[{
+         RowBox[{"\"\< Cutflow for \>\"", " ", "<>", " ", "anaName"}], ",", 
+         "Bold", ",", "Blue"}], "]"}], "]"}], "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "todo", " ", "*)"}], "\[IndentingNewLine]", ")"}]}], 
+    ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetCut", "[", 
+      RowBox[{
+      "json_", ",", "anaName_", ",", "cutName_", ",", "ShowSubprocesses"}], 
+      "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"ListCuts", "[", 
+          RowBox[{"json", ",", "anaName", ",", "ShowSubprocesses"}], "]"}], 
+         ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "cutName"}], "&"}]}], 
+        "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetCut", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "cutName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"ListCuts", "[", 
+          RowBox[{"json", ",", "anaName"}], "]"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "cutName"}], "&"}]}], 
+        "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetCutValue", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "effName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"GetCut", "[", 
+        RowBox[{"json", ",", "anaName", ",", "effName"}], "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{"4", ",", "1", ",", "2"}], "]"}], "]"}], 
+      "\[IndentingNewLine]", ")"}]}], ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetCutStatError", "[", 
+      RowBox[{"json_", ",", "anaName_", ",", "effName_"}], "]"}], ":=", " ", 
+     RowBox[{"(", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"GetCut", "[", 
+         RowBox[{"json", ",", "anaName", ",", "effName"}], "]"}], "[", 
+        RowBox[{"[", 
+         RowBox[{"4", ",", "1", ",", 
+          RowBox[{"5", ";;", "6"}]}], "]"}], "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", ")"}]}], ";"}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.6302126645736523`*^9, 3.6302126682926807`*^9}, {
+   3.630213571068281*^9, 3.630213615246125*^9}, {3.6302136500588913`*^9, 
+   3.6302137667339478`*^9}, {3.6302137986899652`*^9, 3.630213842691394*^9}, {
+   3.630213874693633*^9, 3.6302141320742683`*^9}, 3.6302142030066032`*^9, {
+   3.6302142634485607`*^9, 3.630214381231167*^9}, {3.630214486342355*^9, 
+   3.630214516964677*^9}, {3.6302145489454*^9, 3.6302146407101192`*^9}, {
+   3.630214674742538*^9, 3.6302147220566998`*^9}, {3.630214763022561*^9, 
+   3.630214843158244*^9}, {3.630214885695362*^9, 3.6302149398280487`*^9}, {
+   3.630214996687746*^9, 3.630215107933896*^9}, {3.630215326792695*^9, 
+   3.63021550336619*^9}, {3.630215772950139*^9, 3.6302158619690237`*^9}, 
+   3.630215893414589*^9, {3.630813414745867*^9, 3.630813420971545*^9}, 
+   3.6308134729314833`*^9}]
+}, Closed]]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
+2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[422, 15, 171, 5, 92, "Title"],
+Cell[596, 22, 131, 1, 29, "Text"],
+Cell[730, 25, 849, 14, 227, "Text"],
+Cell[CellGroupData[{
+Cell[1604, 43, 227, 3, 62, "Subchapter"],
+Cell[1834, 48, 226, 5, 28, "Input"],
+Cell[CellGroupData[{
+Cell[2085, 57, 102, 1, 44, "Subsection"],
+Cell[CellGroupData[{
+Cell[2212, 62, 2810, 64, 284, "Input"],
+Cell[5025, 128, 3804, 93, 97, "Output"],
+Cell[8832, 223, 507, 12, 22, "Print"],
+Cell[9342, 237, 851, 18, 28, "Output"],
+Cell[10196, 257, 371, 5, 28, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10616, 268, 98, 1, 44, "Subsection"],
+Cell[CellGroupData[{
+Cell[10739, 273, 113, 1, 35, "Subsubsection"],
+Cell[10855, 276, 376, 10, 46, "Input"],
+Cell[CellGroupData[{
+Cell[11256, 290, 209, 4, 28, "Input"],
+Cell[CellGroupData[{
+Cell[11490, 298, 616, 14, 22, "Print"],
+Cell[12109, 314, 1004, 23, 22, "Print"],
+Cell[13116, 339, 803, 20, 22, "Print"],
+Cell[13922, 361, 804, 20, 21, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14775, 387, 284, 5, 28, "Input"],
+Cell[CellGroupData[{
+Cell[15084, 396, 487, 11, 22, "Print"],
+Cell[15574, 409, 877, 20, 22, "Print"],
+Cell[16454, 431, 647, 16, 22, "Print"],
+Cell[17104, 449, 633, 16, 21, "Print"],
+Cell[17740, 467, 1791, 32, 86, "Print"],
+Cell[19534, 501, 875, 20, 21, "Print"],
+Cell[20412, 523, 650, 17, 21, "Print"],
+Cell[21065, 542, 785, 19, 22, "Print"],
+Cell[21853, 563, 677, 17, 21, "Print"],
+Cell[22533, 582, 646, 16, 22, "Print"],
+Cell[23182, 600, 649, 16, 22, "Print"],
+Cell[23834, 618, 645, 16, 22, "Print"],
+Cell[24482, 636, 715, 17, 22, "Print"],
+Cell[25200, 655, 675, 17, 21, "Print"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[25936, 679, 103, 1, 35, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[26064, 684, 160, 3, 28, "Input"],
+Cell[26227, 689, 438, 11, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[26702, 705, 250, 5, 46, "Input"],
+Cell[26955, 712, 1516, 45, 46, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28508, 762, 225, 4, 46, "Input"],
+Cell[28736, 768, 336, 9, 22, "Print"],
+Cell[29075, 779, 566, 13, 63, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[29678, 797, 211, 4, 28, "Input"],
+Cell[29892, 803, 246, 5, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30175, 813, 218, 4, 28, "Input"],
+Cell[30396, 819, 74, 1, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30507, 825, 271, 5, 28, "Input"],
+Cell[30781, 832, 170, 4, 28, "Output"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[31000, 842, 94, 1, 29, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[31119, 847, 150, 3, 28, "Input"],
+Cell[31272, 852, 3509, 89, 97, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[34818, 946, 178, 3, 28, "Input"],
+Cell[34999, 951, 332, 9, 22, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[35368, 965, 203, 4, 28, "Input"],
+Cell[35574, 971, 556, 14, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[36167, 990, 208, 4, 28, "Input"],
+Cell[36378, 996, 76, 1, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[36491, 1002, 208, 4, 28, "Input"],
+Cell[36702, 1008, 144, 4, 28, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[36919, 1020, 141, 2, 62, "Subchapter"],
+Cell[37063, 1024, 1369, 24, 299, "Text"],
+Cell[38435, 1050, 9334, 209, 829, "Input"],
+Cell[CellGroupData[{
+Cell[47794, 1263, 98, 1, 44, "Subsection"],
+Cell[47895, 1266, 149, 4, 47, "Text"],
+Cell[48047, 1272, 2812, 63, 114, "Input"],
+Cell[50862, 1337, 13048, 228, 259, "Input"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[63971, 1572, 90, 1, 92, "Title"],
+Cell[64064, 1575, 1911, 57, 165, "Input"],
+Cell[65978, 1634, 26391, 656, 2477, "Input"]
+}, Closed]]
+}
+]
+*)
+
