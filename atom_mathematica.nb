@@ -1048,217 +1048,6 @@ type.\nxcenter, ycenter, xlow, xhigh, ylow, yhigh, sumw, sumw2, sumwx, sumwx2\
   3.630328540741417*^9, 3.630328552603384*^9}, {3.6303299386404*^9, 
   3.630329940243088*^9}}],
 
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{
-    RowBox[{"GetHistRaw", "[", "fileName_", "]"}], ":=", " ", 
-    "\[IndentingNewLine]", 
-    RowBox[{"(", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"tempYoda", "=", 
-       RowBox[{"Import", "[", 
-        RowBox[{"fileName", ",", "\"\<Table\>\""}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"posL", "=", 
-       RowBox[{
-        RowBox[{"Position", "[", 
-         RowBox[{"tempYoda", ",", 
-          RowBox[{"{", 
-           RowBox[{"\"\<#\>\"", ",", "\"\<BEGIN\>\"", ",", "___"}], "}"}]}], 
-         "]"}], "//", "Flatten"}]}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"nHistos", " ", "=", " ", 
-       RowBox[{"Length", "[", " ", "posL", " ", "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"outHistos", "=", 
-       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"(*", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"Collect", " ", "histograms", " ", "into", " ", "list"}], ",",
-         "\[IndentingNewLine]", 
-        RowBox[{
-        "with", " ", "position", " ", "of", " ", "beginning", " ", "of", " ", 
-         
-         RowBox[{"histos", " ", "'"}], 
-         RowBox[{"posL", "'"}]}], ",", " ", "\[IndentingNewLine]", 
-        RowBox[{"split", " ", "output", " ", "into", " ", "lists"}], ",", 
-        "\[IndentingNewLine]", 
-        RowBox[{
-        "be", " ", "careful", " ", "with", " ", "last", " ", "histo", " ", 
-         "which", " ", "goes", " ", 
-         RowBox[{"from", " ", "'"}], 
-         RowBox[{"BEGIN", "'"}], " ", "to", " ", "the", " ", "end", " ", "of",
-          " ", "the", " ", "file"}]}], "\[IndentingNewLine]", "*)"}], 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"Do", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"AppendTo", "[", 
-          RowBox[{"outHistos", ",", "\[IndentingNewLine]", " ", 
-           RowBox[{"(*", 
-            RowBox[{"cleanup", " ", "comments"}], "*)"}], 
-           "\[IndentingNewLine]", 
-           RowBox[{"DeleteCases", "[", " ", "\[IndentingNewLine]", 
-            RowBox[{
-             RowBox[{"tempYoda", "\[LeftDoubleBracket]", " ", 
-              RowBox[{
-               RowBox[{"posL", "[", 
-                RowBox[{"[", "i", "]"}], "]"}], " ", ";;", " ", 
-               RowBox[{"If", "[", " ", 
-                RowBox[{
-                 RowBox[{"i", " ", "<", " ", "nHistos"}], "  ", ",", " ", 
-                 RowBox[{
-                  RowBox[{"posL", "[", 
-                   RowBox[{"[", 
-                    RowBox[{"i", "+", "1"}], "]"}], "]"}], "-", "1"}], ",", 
-                 " ", 
-                 RowBox[{"Length", "[", "tempYoda", "]"}]}], " ", "]"}]}], 
-              " ", "\[RightDoubleBracket]"}], " ", "\[IndentingNewLine]", ",", 
-             RowBox[{
-              RowBox[{"{", 
-               RowBox[{"\"\<#\>\"", ",", "___"}], "}"}], "|", 
-              RowBox[{"{", 
-               RowBox[{"\"\<###\>\"", ",", "___"}], "}"}], "|", 
-              RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
-          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
-        RowBox[{"{", 
-         RowBox[{"i", ",", "nHistos"}], "}"}]}], "\[IndentingNewLine]", "]"}],
-       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", "outHistos"}], 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", ")"}]}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"HistogramPlot", "[", 
-    RowBox[{"histo_", ",", "HistogramOptions___"}], "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-      "high", ",", "low", ",", "plotInput", ",", "HistData", ",", "HistTitle",
-        ",", "overFlow", ",", "underFlow", ",", "Nbins", ",", 
-       "HistTitleString"}], "}"}], ",", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"HistTitle", "=", 
-       RowBox[{"Select", "[", 
-        RowBox[{"histo", ",", 
-         RowBox[{
-          RowBox[{"StringMatchQ", "[", 
-           RowBox[{
-            RowBox[{"#", "[", 
-             RowBox[{"[", "1", "]"}], "]"}], ",", 
-            RowBox[{"\"\<Path=\>\"", "~~", "___"}]}], "]"}], "&"}]}], "]"}]}],
-       ";", "\[IndentingNewLine]", 
-      RowBox[{"HistTitleString", "=", 
-       RowBox[{
-        RowBox[{"StringSplit", "[", 
-         RowBox[{
-          RowBox[{"HistTitle", "[", 
-           RowBox[{"[", 
-            RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", "\"\<=\>\""}], "]"}], 
-        "[", 
-        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"underFlow", " ", "=", " ", 
-       RowBox[{"Select", "[", 
-        RowBox[{"histo", ",", 
-         RowBox[{
-          RowBox[{"StringMatchQ", "[", 
-           RowBox[{
-            RowBox[{"#", "[", 
-             RowBox[{"[", "1", "]"}], "]"}], ",", 
-            RowBox[{"\"\<Underflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
-        "]"}]}], ";", " ", 
-      RowBox[{"(*", " ", 
-       RowBox[{
-        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
-        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"overFlow", "=", 
-       RowBox[{"Select", "[", 
-        RowBox[{"histo", ",", 
-         RowBox[{
-          RowBox[{"StringMatchQ", "[", 
-           RowBox[{
-            RowBox[{"#", "[", 
-             RowBox[{"[", "1", "]"}], "]"}], ",", 
-            RowBox[{"\"\<Overflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
-        "]"}]}], ";", " ", 
-      RowBox[{"(*", " ", 
-       RowBox[{
-        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
-        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"HistData", "=", 
-       RowBox[{"Select", "[", 
-        RowBox[{"histo", ",", 
-         RowBox[{
-          RowBox[{"NumericQ", "[", 
-           RowBox[{"#", "[", 
-            RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "]"}]}], ";", 
-      "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"plotInput", " ", "=", " ", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"{", 
-          RowBox[{
-           RowBox[{"#", "[", 
-            RowBox[{"[", "3", "]"}], "]"}], ",", 
-           RowBox[{
-            RowBox[{"#", "[", 
-             RowBox[{"[", "1", "]"}], "]"}], " ", "\[LessEqual]", "x", "<", 
-            RowBox[{"#", "[", 
-             RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], "&"}], " ", "/@", " ",
-         "HistData"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"low", " ", "=", " ", 
-       RowBox[{
-        RowBox[{"First", "[", "HistData", "]"}], "[", 
-        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"high", "=", 
-       RowBox[{
-        RowBox[{"Last", "[", "HistData", "]"}], "[", 
-        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Nbins", "=", 
-       RowBox[{"Length", "[", "HistData", "]"}]}], ";", "\[IndentingNewLine]",
-       "\[IndentingNewLine]", 
-      RowBox[{"Plot", "[", 
-       RowBox[{
-        RowBox[{"Piecewise", "[", "plotInput", "]"}], ",", 
-        RowBox[{"{", 
-         RowBox[{"x", ",", "low", ",", "high"}], "}"}], ",", 
-        "HistogramOptions", ",", 
-        RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
-        RowBox[{"Exclusions", "\[Rule]", "None"}], ",", 
-        RowBox[{"PlotPoints", "\[Rule]", 
-         RowBox[{"3", 
-          RowBox[{"(", "Nbins", ")"}]}]}], ",", 
-        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
-        RowBox[{"PlotLabel", "->", "HistTitleString"}]}], "]"}]}]}], "\n", 
-    "]"}]}], ";"}]}], "Input",
- CellChangeTimes->{{3.630238850650148*^9, 3.630238856233121*^9}, {
-   3.630238896861823*^9, 3.630238917604951*^9}, {3.6302400451387863`*^9, 
-   3.6302400926808977`*^9}, {3.630240127947644*^9, 3.6302401403826933`*^9}, {
-   3.630240493382957*^9, 3.630240651207631*^9}, 3.630240718867569*^9, {
-   3.6302407593239*^9, 3.630240941581744*^9}, {3.630241014698352*^9, 
-   3.6302410373223953`*^9}, {3.6302411688735456`*^9, 3.630241205731948*^9}, {
-   3.630241354364737*^9, 3.6302414455042057`*^9}, {3.6302415702863894`*^9, 
-   3.630241886589596*^9}, 3.630241945610559*^9, 3.630242030874469*^9, 
-   3.6302423871117077`*^9, {3.630242441376932*^9, 3.630242469403804*^9}, 
-   3.6302425132155437`*^9, {3.630242558066585*^9, 3.630242560393961*^9}, {
-   3.630242619539474*^9, 3.630242734671693*^9}, {3.6302428027973557`*^9, 
-   3.630242890386389*^9}, {3.630327500167123*^9, 3.6303277089707127`*^9}, {
-   3.6303277549316483`*^9, 3.630327890445674*^9}, {3.630328429906846*^9, 
-   3.6303284833947983`*^9}, {3.630329911372179*^9, 3.630329911514413*^9}, {
-   3.6303337414212*^9, 3.630333791326418*^9}, {3.630335180569305*^9, 
-   3.630335188969454*^9}, {3.630341497389995*^9, 3.630341501691437*^9}, {
-   3.630344024841921*^9, 3.630344025839368*^9}, {3.6303441392085953`*^9, 
-   3.6303441844089403`*^9}, {3.63038612129858*^9, 3.630386124652351*^9}, 
-   3.630393900430814*^9, {3.630395261579815*^9, 3.6303953105141897`*^9}, {
-   3.6303953938311996`*^9, 3.6303954622048397`*^9}, {3.630402295296741*^9, 
-   3.6304023029394093`*^9}, {3.630402346289517*^9, 3.630402349902656*^9}, {
-   3.630402901918021*^9, 3.6304029122872267`*^9}, 3.630408912063067*^9}],
-
 Cell[CellGroupData[{
 
 Cell["Examples", "Subsection",
@@ -1277,7 +1066,7 @@ Cell[BoxData[{
     RowBox[{"(", 
      RowBox[{"GetHistRaw", "[", 
       RowBox[{"wdir", "<>", "\"\<input_files/Qstar_500_truth.yoda\>\""}], 
-      "]"}], ")"}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+      "]"}], ")"}]}], ";"}], "\[IndentingNewLine]"}], "\n", 
  RowBox[{
   RowBox[{"h1", "=", 
    RowBox[{"HistogramPlot", "[", 
@@ -2288,8 +2077,219 @@ Cell[BoxData[
    3.630214996687746*^9, 3.630215107933896*^9}, {3.630215326792695*^9, 
    3.63021550336619*^9}, {3.630215772950139*^9, 3.6302158619690237`*^9}, 
    3.630215893414589*^9, {3.630813414745867*^9, 3.630813420971545*^9}, 
-   3.6308134729314833`*^9}]
-}, Closed]]
+   3.6308134729314833`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetHistRaw", "[", "fileName_", "]"}], ":=", " ", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"tempYoda", "=", 
+       RowBox[{"Import", "[", 
+        RowBox[{"fileName", ",", "\"\<Table\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"posL", "=", 
+       RowBox[{
+        RowBox[{"Position", "[", 
+         RowBox[{"tempYoda", ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<#\>\"", ",", "\"\<BEGIN\>\"", ",", "___"}], "}"}]}], 
+         "]"}], "//", "Flatten"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"nHistos", " ", "=", " ", 
+       RowBox[{"Length", "[", " ", "posL", " ", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"outHistos", "=", 
+       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Collect", " ", "histograms", " ", "into", " ", "list"}], ",",
+         "\[IndentingNewLine]", 
+        RowBox[{
+        "with", " ", "position", " ", "of", " ", "beginning", " ", "of", " ", 
+         
+         RowBox[{"histos", " ", "'"}], 
+         RowBox[{"posL", "'"}]}], ",", " ", "\[IndentingNewLine]", 
+        RowBox[{"split", " ", "output", " ", "into", " ", "lists"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+        "be", " ", "careful", " ", "with", " ", "last", " ", "histo", " ", 
+         "which", " ", "goes", " ", 
+         RowBox[{"from", " ", "'"}], 
+         RowBox[{"BEGIN", "'"}], " ", "to", " ", "the", " ", "end", " ", "of",
+          " ", "the", " ", "file"}]}], "\[IndentingNewLine]", "*)"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"AppendTo", "[", 
+          RowBox[{"outHistos", ",", "\[IndentingNewLine]", " ", 
+           RowBox[{"(*", 
+            RowBox[{"cleanup", " ", "comments"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{"DeleteCases", "[", " ", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"tempYoda", "\[LeftDoubleBracket]", " ", 
+              RowBox[{
+               RowBox[{"posL", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], " ", ";;", " ", 
+               RowBox[{"If", "[", " ", 
+                RowBox[{
+                 RowBox[{"i", " ", "<", " ", "nHistos"}], "  ", ",", " ", 
+                 RowBox[{
+                  RowBox[{"posL", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", "+", "1"}], "]"}], "]"}], "-", "1"}], ",", 
+                 " ", 
+                 RowBox[{"Length", "[", "tempYoda", "]"}]}], " ", "]"}]}], 
+              " ", "\[RightDoubleBracket]"}], " ", "\[IndentingNewLine]", ",", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"\"\<#\>\"", ",", "___"}], "}"}], "|", 
+              RowBox[{"{", 
+               RowBox[{"\"\<###\>\"", ",", "___"}], "}"}], "|", 
+              RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "nHistos"}], "}"}]}], "\[IndentingNewLine]", "]"}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", "outHistos"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", ")"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"HistogramPlot", "[", 
+    RowBox[{"histo_", ",", "HistogramOptions___"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "high", ",", "low", ",", "plotInput", ",", "HistData", ",", "HistTitle",
+        ",", "overFlow", ",", "underFlow", ",", "Nbins", ",", 
+       "HistTitleString"}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"HistTitle", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Path=\>\"", "~~", "___"}]}], "]"}], "&"}]}], "]"}]}],
+       ";", "\[IndentingNewLine]", 
+      RowBox[{"HistTitleString", "=", 
+       RowBox[{
+        RowBox[{"StringSplit", "[", 
+         RowBox[{
+          RowBox[{"HistTitle", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", "\"\<=\>\""}], "]"}], 
+        "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"underFlow", " ", "=", " ", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Underflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
+        "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
+        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"overFlow", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"StringMatchQ", "[", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{"\"\<Overflow\>\"", "~~", "___"}]}], "]"}], "&"}]}], 
+        "]"}]}], ";", " ", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"TODO", ":", " ", "Implement"}], ",", " ", 
+        RowBox[{"need", " ", "example"}]}], "*)"}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"HistData", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{"histo", ",", 
+         RowBox[{
+          RowBox[{"NumericQ", "[", 
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"plotInput", " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"#", "[", 
+            RowBox[{"[", "3", "]"}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"#", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], " ", "\[LessEqual]", "x", "<", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}]}], "}"}], "&"}], " ", "/@", " ",
+         "HistData"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"low", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"First", "[", "HistData", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"high", "=", 
+       RowBox[{
+        RowBox[{"Last", "[", "HistData", "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Nbins", "=", 
+       RowBox[{"Length", "[", "HistData", "]"}]}], ";", "\[IndentingNewLine]",
+       "\[IndentingNewLine]", 
+      RowBox[{"Plot", "[", 
+       RowBox[{
+        RowBox[{"Piecewise", "[", "plotInput", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "low", ",", "high"}], "}"}], ",", 
+        "HistogramOptions", ",", 
+        RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+        RowBox[{"Exclusions", "\[Rule]", "None"}], ",", 
+        RowBox[{"PlotPoints", "\[Rule]", 
+         RowBox[{"3", 
+          RowBox[{"(", "Nbins", ")"}]}]}], ",", 
+        RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+        RowBox[{"PlotLabel", "->", "HistTitleString"}]}], "]"}]}]}], "\n", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.630238850650148*^9, 3.630238856233121*^9}, {
+   3.630238896861823*^9, 3.630238917604951*^9}, {3.6302400451387863`*^9, 
+   3.6302400926808977`*^9}, {3.630240127947644*^9, 3.6302401403826933`*^9}, {
+   3.630240493382957*^9, 3.630240651207631*^9}, 3.630240718867569*^9, {
+   3.6302407593239*^9, 3.630240941581744*^9}, {3.630241014698352*^9, 
+   3.6302410373223953`*^9}, {3.6302411688735456`*^9, 3.630241205731948*^9}, {
+   3.630241354364737*^9, 3.6302414455042057`*^9}, {3.6302415702863894`*^9, 
+   3.630241886589596*^9}, 3.630241945610559*^9, 3.630242030874469*^9, 
+   3.6302423871117077`*^9, {3.630242441376932*^9, 3.630242469403804*^9}, 
+   3.6302425132155437`*^9, {3.630242558066585*^9, 3.630242560393961*^9}, {
+   3.630242619539474*^9, 3.630242734671693*^9}, {3.6302428027973557`*^9, 
+   3.630242890386389*^9}, {3.630327500167123*^9, 3.6303277089707127`*^9}, {
+   3.6303277549316483`*^9, 3.630327890445674*^9}, {3.630328429906846*^9, 
+   3.6303284833947983`*^9}, {3.630329911372179*^9, 3.630329911514413*^9}, {
+   3.6303337414212*^9, 3.630333791326418*^9}, {3.630335180569305*^9, 
+   3.630335188969454*^9}, {3.630341497389995*^9, 3.630341501691437*^9}, {
+   3.630344024841921*^9, 3.630344025839368*^9}, {3.6303441392085953`*^9, 
+   3.6303441844089403`*^9}, {3.63038612129858*^9, 3.630386124652351*^9}, 
+   3.630393900430814*^9, {3.630395261579815*^9, 3.6303953105141897`*^9}, {
+   3.6303953938311996`*^9, 3.6303954622048397`*^9}, {3.630402295296741*^9, 
+   3.6304023029394093`*^9}, {3.630402346289517*^9, 3.630402349902656*^9}, {
+   3.630402901918021*^9, 3.6304029122872267`*^9}, 3.630408912063067*^9}]
+}, Open  ]]
 },
 WindowSize->{1440, 851},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -2415,20 +2415,20 @@ Cell[36702, 1008, 144, 4, 28, "Output"]
 Cell[CellGroupData[{
 Cell[36919, 1020, 141, 2, 62, "Subchapter"],
 Cell[37063, 1024, 1369, 24, 299, "Text"],
-Cell[38435, 1050, 9334, 209, 829, "Input"],
 Cell[CellGroupData[{
-Cell[47794, 1263, 98, 1, 44, "Subsection"],
-Cell[47895, 1266, 149, 4, 47, "Text"],
-Cell[48047, 1272, 2812, 63, 114, "Input"],
-Cell[50862, 1337, 13048, 228, 259, "Input"]
+Cell[38457, 1052, 98, 1, 44, "Subsection"],
+Cell[38558, 1055, 149, 4, 47, "Text"],
+Cell[38710, 1061, 2812, 63, 114, "Input"],
+Cell[41525, 1126, 13048, 228, 259, "Input"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[63971, 1572, 90, 1, 92, "Title"],
-Cell[64064, 1575, 1911, 57, 165, "Input"],
-Cell[65978, 1634, 26391, 656, 2477, "Input"]
-}, Closed]]
+Cell[54634, 1361, 90, 1, 92, "Title"],
+Cell[54727, 1364, 1911, 57, 165, "Input"],
+Cell[56641, 1423, 26391, 656, 2477, "Input"],
+Cell[83035, 2081, 9334, 209, 829, "Input"]
+}, Open  ]]
 }
 ]
 *)

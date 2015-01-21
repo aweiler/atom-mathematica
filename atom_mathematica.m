@@ -1,4 +1,48 @@
 
+(*************************)
+(*    ATOM MATHEMATICA ROUTINES       *)
+(*    v1.0                            *)
+(*    author: andreas.weiler@cern.ch *)
+
+
+(*
+
+1) should be able to parse all the available information in the JSON (produced from Yaml via the yaml2json tool)
+2) should be able to read yoda histogram files (done for HISTO1D)
+3) should be user-friendly (done)
+
+*)
+
+
+(*
+List of changes:
+
+  01/19/15: AW: first commit
+  01/21/15: AW: added yoda HIST1D plotting
+
+TODO: 
+
+  - check if value exists before printing, otherwise show nothing
+  - import the rest of the (legacy) matehamtica atom package
+  - underflow/overflow HIST1D example needed
+  - get more yoda histogramming examples
+
+*)
+
+
+
+
+
+
+
+
+
+
+
+(*************************)
+
+
+
 OV := OptionValue; (*save space*)
 
 (* all the contents of an analysis*)
@@ -170,3 +214,89 @@ GetCutValue[json_, anaName_, effName_] := (
 GetCutStatError[json_, anaName_, effName_] := (
    GetCut[json, anaName, effName][[4, 1, 5 ;; 6]][[1]]
    );
+
+
+(*************************)
+(*   YODA histogram plotting   *)
+(*************************)
+
+(*
+
+from: https://yoda.hepforge.org/trac/wiki/DataFormat  
+
+----  
+\[Bullet] Each data object is wrapped with type-specific BEGIN...END lines, to trigger the processing of the contained data in the correct way.
+\[Bullet] The hash sign (#) is to be interpreted as a comment character in the manner of Python. Need some way to declare that a comment is actually a header?
+\[Bullet] An arbitrary number of headers may be present on each object. We recommend that these headers are escaped by a prefix # character, for compatibility with gnuplot
+\[Bullet] For compatibility with gnuplot, the first 6 ??? data columns of records must be compatible with the gnuplot "plot with xyerrors" format, namely: x, y, xlow, xhigh, ylow, yhigh
+
+
+HISTO1D 
+The main data type.
+xcenter, ycenter, xlow, xhigh, ylow, yhigh, sumw, sumw2, sumwx, sumwx2
+
+# xlow   xhigh   sumw  sumw2   sumwx   sumwx2  numEntries
+----
+
+*)
+
+GetHistRaw[fileName_] := 
+  (
+   tempYoda = Import[fileName, "Table"];
+   posL = Position[tempYoda, {"#", "BEGIN", ___}] // Flatten;
+   
+   nHistos = Length[ posL ];
+   outHistos = {};
+   
+   (*
+   Collect histograms into list,
+   with position of beginning of histos 'posL', 
+   split output into lists,
+   be careful with last histo which goes from 'BEGIN' to the end of \
+the file
+   *)
+   
+   Do[
+    AppendTo[outHistos,
+       (*cleanup comments*)
+      DeleteCases[ 
+       tempYoda[[ 
+        posL[[i]] ;; 
+         If[ i < nHistos  , posL[[i + 1]] - 1, Length[tempYoda] ] ]] 
+       , {"#", ___} | {"###", ___} | {}
+       ]
+      ];
+    , {i, nHistos}
+    ];
+   
+   outHistos
+   
+   );
+
+HistogramPlot[histo_, HistogramOptions___] := 
+  Module[{high, low, plotInput, HistData, HistTitle, overFlow, 
+    underFlow, Nbins, HistTitleString},
+   
+   HistTitle = Select[histo, StringMatchQ[#[[1]], "Path=" ~~ ___] &];
+   HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
+   
+   underFlow = 
+    Select[histo, StringMatchQ[#[[1]], "Underflow" ~~ ___] &]; (* 
+   TODO: Implement, need example*)
+   
+   overFlow = 
+    Select[histo, StringMatchQ[#[[1]], "Overflow" ~~ ___] &]; (* 
+   TODO: Implement, need example*)
+   
+   HistData = Select[histo, NumericQ[#[[1]]] &];
+   
+   plotInput = {#[[3]], #[[1]] <= x < #[[2]]} & /@ HistData;
+   
+   low = First[HistData][[1]];
+   high = Last[HistData][[1]];
+   Nbins = Length[HistData];
+   
+   Plot[Piecewise[plotInput], {x, low, high}, HistogramOptions, 
+    PlotRange -> All, Exclusions -> None, PlotPoints -> 3 (Nbins), 
+    Frame -> True, PlotLabel -> HistTitleString]
+   ];
