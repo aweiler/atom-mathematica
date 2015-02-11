@@ -1,3 +1,4 @@
+(* ::Package:: *)
 
 (*************************)
 (*    ATOM MATHEMATICA ROUTINES       *)
@@ -296,15 +297,15 @@ HistogramPlot[histo_, HistogramOptions___] :=
   Module[{high, low, plotInput, HistData, HistTitle, overFlow, 
     underFlow, Nbins, HistTitleString},
    
-   HistTitle = Select[histo, StringMatchQ[#[[1]], "Path=" ~~ ___] &];
+   HistTitle = Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Path=" ~~ ___], False] &];
    HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
    
    underFlow = 
-    Select[histo, StringMatchQ[#[[1]], "Underflow" ~~ ___] &]; (* 
+    Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Underflow" ~~ ___], False] &]; (* 
    TODO: Implement, need example*)
    
    overFlow = 
-    Select[histo, StringMatchQ[#[[1]], "Overflow" ~~ ___] &]; (* 
+    Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Overflow" ~~ ___], False] &]; (* 
    TODO: Implement, need example*)
    
    HistData = Select[histo, NumericQ[#[[1]]] &];
