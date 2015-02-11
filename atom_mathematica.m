@@ -17,6 +17,7 @@
 (*
 List of changes:
 
+  02/11/15: AW: further cut methods
   01/19/15: AW: first commit
   01/21/15: AW: added yoda HIST1D plotting
 
@@ -29,16 +30,6 @@ TODO:
 
 *)
 
-
-
-
-
-
-
-
-
-
-
 (*************************)
 
 
@@ -46,7 +37,6 @@ TODO:
 OV := OptionValue; (*save space*)
 
 (* all the contents of an analysis*)
-
 PickAnalysis[json_, anaName_] := OV[OV[{json}, "Analyses"], anaName];
 
 GetVal[json_, entrName_] := OV[OV[json, entrName], "Value"];
@@ -115,7 +105,7 @@ ListEfficiencies[json_, anaName_, ShowSubprocesses] := (
    "Sub-process ID"] }& *)
    );
 
-ShowListEfficiencies[json_, anaName_] := (
+ShowEfficiencies[json_, anaName_] := (
    Print[Style["Efficiencies for " <> anaName, Blue, Bold]];
    Join[{{"Efficiency Name", "Description", "IsControlRegion", 
        "Efficiency Value", "Stat Error -", "Stat Error +"}}, 
@@ -191,7 +181,7 @@ ListCuts[json_, anaName_] := (
    );
 
 
-ShowListCuts[json_, anaName_] := (
+ShowCuts[json_, anaName_] := (
    Print[Style[ " Cutflow for " <> anaName, Bold, Blue]]
    (* todo *)
    );
@@ -214,6 +204,35 @@ GetCutValue[json_, anaName_, effName_] := (
 GetCutStatError[json_, anaName_, effName_] := (
    GetCut[json, anaName, effName][[4, 1, 5 ;; 6]][[1]]
    );
+
+(*************************)
+(*   Cross Sections   *)
+(*************************)
+
+ListCrossSection[json_, ShowSubprocesses] := 
+  (
+   {OV[#, "Process ID"], OV[#, "Cross Section"], 
+      OV[#, "Cross Section Error"][[1]], 
+      OV[#, "Cross Section Error"][[2]]} & /@ 
+    OV[json, "Cross Sections"]
+   );
+
+GetTotalCrossSection[json_] :=
+  (
+   (Select[
+      ListCrossSection[json, ShowSubprocesses], #[[1]] == 0 &])[[1, 
+     2 ;; 4]]
+   );
+
+ShowCrossSection[json_, ShowSubprocesses] := 
+  (
+   Print[Style["Cross Sections in fb", Blue, Bold] , 
+    " (Process ID = 0 is total xsec)" ];
+   Join[{{"Process ID", "Cross Section", "Cross Section Error-", 
+       "Cross Section Error+"}}, 
+     ListCrossSection[json, ShowSubprocesses]] // Grid
+   );
+
 
 
 (*************************)
