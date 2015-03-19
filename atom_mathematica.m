@@ -260,63 +260,127 @@ xcenter, ycenter, xlow, xhigh, ylow, yhigh, sumw, sumw2, sumwx, sumwx2
 
 *)
 
-GetHistRaw[fileName_] := 
-  (
-   tempYoda = Import[fileName, "Table"];
+GetYodaRaw[fileName_] := (tempYoda = Import[fileName, "Table"];
    posL = Position[tempYoda, {"#", "BEGIN", ___}] // Flatten;
-   
-   nHistos = Length[ posL ];
+   nHistos = Length[posL];
    outHistos = {};
    
    (*
-   Collect histograms into list,
-   with position of beginning of histos 'posL', 
-   split output into lists,
-   be careful with last histo which goes from 'BEGIN' to the end of \
+
+    Collect histograms into list,
+   with position of beginning of histos'posL',split output into lists,
+   be careful with last histo which goes from'BEGIN' to the end of \
 the file
-   *)
-   
+
+*)
+
+
    Do[
-    AppendTo[outHistos,
-       (*cleanup comments*)
-      DeleteCases[ 
-       tempYoda[[ 
-        posL[[i]] ;; 
-         If[ i < nHistos  , posL[[i + 1]] - 1, Length[tempYoda] ] ]] 
-       , {"#", ___} | {"###", ___} | {}
-       ]
-      ];
-    , {i, nHistos}
-    ];
+    AppendTo[outHistos,(*cleanup comments*)
+      DeleteCases[
+       tempYoda[[posL[[i]] ;; 
+          If[i < nHistos, posL[[i + 1]] - 1, 
+           Length[tempYoda]]]], {"#", ___} | {"###", ___} | {}]];, {i,
+      nHistos}];
+
+
+  (* Print some info *)
+
+   Do[
+    histo = outHistos[[n]];
+    
+    HistTitle = 
+     Select[histo, 
+      If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Path=" ~~ ___],
+         False] &];
+
+      HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
+    HistType = 
+     Select[histo, 
+      If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Type=" ~~ ___],
+         False] &];
+    
+    HistType = StringSplit[HistType[[1, 1]], "="][[2]];
+    
+    Print[n, " Imported ..", HistType, "..  ", HistTitleString];
+    
+    , {n, Length[outHistos]}];
    
-   outHistos
+   return = outHistos
    
    );
 
 HistogramPlot[histo_, HistogramOptions___] := 
   Module[{high, low, plotInput, HistData, HistTitle, overFlow, 
-    underFlow, Nbins, HistTitleString},
+    underFlow, Nbins, HistTitleString}, 
+   HistTitle = 
+    Select[histo, 
+     If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Path=" ~~ ___], 
+       False] &];
+   HistType = 
+    Select[histo, 
+     If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Type=" ~~ ___], 
+       False] &];
+   HistType = StringSplit[HistType[[1, 1]], "="][[2]];
    
-   HistTitle = Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Path=" ~~ ___], False] &];
+   If [HistType !=  "Histo1D", 
+    Print[ "Not a histogram. ", HistType , 
+     " needs a different plot function"];
+    Return[];
+    ];
+   
+   
    HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
-   
    underFlow = 
-    Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Underflow" ~~ ___], False] &]; (* 
-   TODO: Implement, need example*)
-   
+    Select[histo, 
+     If[Head[#[[1]]] == String, 
+       StringMatchQ[#[[1]], "Underflow" ~~ ___], False] &];(*TODO:
+   Implement,need example*)
    overFlow = 
-    Select[histo, If[Head[#[[1]]]==String, StringMatchQ[#[[1]], "Overflow" ~~ ___], False] &]; (* 
-   TODO: Implement, need example*)
-   
+    Select[histo, 
+     If[Head[#[[1]]] == String, 
+       StringMatchQ[#[[1]], "Overflow" ~~ ___], False] &];(*TODO:
+   Implement,need example*)
    HistData = Select[histo, NumericQ[#[[1]]] &];
-   
    plotInput = {#[[3]], #[[1]] <= x < #[[2]]} & /@ HistData;
-   
    low = First[HistData][[1]];
    high = Last[HistData][[1]];
    Nbins = Length[HistData];
-   
    Plot[Piecewise[plotInput], {x, low, high}, HistogramOptions, 
     PlotRange -> All, Exclusions -> None, PlotPoints -> 3 (Nbins), 
     Frame -> True, PlotLabel -> HistTitleString]
+   ];
+
+Needs["ErrorBarPlots`"];
+
+ScatterPlot[histo_, plotOptions___] := 
+  Module[{high, low, plotInput, HistData, HistTitle, overFlow, 
+    underFlow, Nbins, HistTitleString}, 
+   HistTitle = 
+    Select[histo, 
+     If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Path=" ~~ ___], 
+       False] &];
+   HistType = 
+    Select[histo, 
+     If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Type=" ~~ ___], 
+       False] &];
+   HistType = StringSplit[HistType[[1, 1]], "="][[2]];
+   
+   If [HistType !=  "Scatter2D", 
+    Print[ "Not a scatter plot. ", HistType , 
+     " needs a different plot function"];
+    Return[];
+    ];
+   
+   
+   HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
+   
+   HistData = Select[histo, NumericQ[#[[1]]] &];
+   
+   
+   PlotData = {{#[[1]], #[[4]]}, 
+       ErrorBar[{-#[[2]], #[[3]]}, {-#[[5]], #[[6]]}]} & /@ HistData;
+   ErrorListPlot[PlotData, PlotRange -> All, Frame -> True, 
+    plotOptions]
+   
    ];
