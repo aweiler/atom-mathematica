@@ -261,7 +261,7 @@ xcenter, ycenter, xlow, xhigh, ylow, yhigh, sumw, sumw2, sumwx, sumwx2
 *)
 
 GetYodaRaw[fileName_] := (tempYoda = Import[fileName, "Table"];
-   posL = Position[tempYoda, {"#", "BEGIN", ___}] // Flatten;
+   posL = Position[tempYoda, {"#", "BEGIN", ___}|{"BEGIN", ___}] // Flatten;
    nHistos = Length[posL];
    outHistos = {};
    
@@ -354,8 +354,8 @@ HistogramPlot[histo_, HistogramOptions___] :=
 Needs["ErrorBarPlots`"];
 
 ScatterPlot[histo_, plotOptions___] := 
-  Module[{high, low, plotInput, HistData, HistTitle, overFlow, 
-    underFlow, Nbins, HistTitleString}, 
+  Module[{HistData, HistTitle, PlotData,
+    HistTitleString}, 
    HistTitle = 
     Select[histo, 
      If[Head[#[[1]]] == String, StringMatchQ[#[[1]], "Path=" ~~ ___], 
@@ -372,11 +372,9 @@ ScatterPlot[histo_, plotOptions___] :=
     Return[];
     ];
    
-   
    HistTitleString = StringSplit[HistTitle[[1, 1]], "="][[2]];
    
    HistData = Select[histo, NumericQ[#[[1]]] &];
-   
    
    PlotData = {{#[[1]], #[[4]]}, 
        ErrorBar[{-#[[2]], #[[3]]}, {-#[[5]], #[[6]]}]} & /@ HistData;

@@ -3,10 +3,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[    129182,       3312]
-NotebookOptionsPosition[    123281,       3115]
-NotebookOutlinePosition[    123633,       3131]
-CellTagsIndexPosition[    123590,       3128]
+NotebookDataLength[    129571,       3326]
+NotebookOptionsPosition[    123556,       3125]
+NotebookOutlinePosition[    123908,       3141]
+CellTagsIndexPosition[    123865,       3138]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2171,6 +2171,16 @@ Cell[BoxData[
    3.6357835074780197`*^9, 3.6357836374126987`*^9}, {3.6357837010865717`*^9, 
    3.635783713814218*^9}, {3.6357841772200327`*^9, 3.6357842139018583`*^9}, {
    3.63578438347997*^9, 3.635784391914186*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"7.", "/", "30."}]], "Input",
+ CellChangeTimes->{{3.6357957531763897`*^9, 3.635795764712514*^9}}],
+
+Cell[BoxData["0.23333333333333334`"], "Output",
+ CellChangeTimes->{{3.635795756497711*^9, 3.6357957650232964`*^9}}]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
@@ -3297,15 +3307,19 @@ Cell[78804, 2032, 432, 11, 22, "Print"]
 Cell[CellGroupData[{
 Cell[79285, 2049, 531, 12, 28, "Input"],
 Cell[79819, 2063, 5615, 109, 239, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[85471, 2177, 120, 2, 28, "Input"],
+Cell[85594, 2181, 115, 1, 28, "Output"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[85507, 2180, 90, 1, 92, "Title"],
-Cell[85600, 2183, 1911, 57, 165, "Input"],
-Cell[87514, 2242, 26414, 659, 2970, "Input"],
-Cell[113931, 2903, 9334, 209, 1270, "Input"]
+Cell[85782, 2190, 90, 1, 92, "Title"],
+Cell[85875, 2193, 1911, 57, 165, "Input"],
+Cell[87789, 2252, 26414, 659, 2970, "Input"],
+Cell[114206, 2913, 9334, 209, 1270, "Input"]
 }, Closed]]
 }
 ]
